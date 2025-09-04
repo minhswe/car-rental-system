@@ -1,13 +1,18 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
-
+import { Request, Response, NextFunction, RequestHandler } from "express";
+import mongoose, { MongooseError } from "mongoose";
+import { throwError } from "common/configs/error.config";
 const asyncHandler =
   (
-    fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+    func: (req: Request, res: Response, next: NextFunction) => Promise<any>
   ): RequestHandler =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await fn(req, res, next);
-    } catch (error) {
+      await func(req, res, next);
+    } catch (error: unknown) {
+      if (error instanceof mongoose.mongo.MongoServerError) {
+        const field = Object.keys(error.keyValue)[0];
+        return next(throwError(400, `${field} already exists`));
+      }
       next(error);
     }
   };

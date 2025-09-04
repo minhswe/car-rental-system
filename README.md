@@ -2,7 +2,7 @@
 This is a full-stack project for a car rental system, comprising a frontend, a backend, and a database.
 
 ## Technology stack
-- **Frontend:** JavaScript with React.js
+- **Frontend:** TypeScript with React.js
 - **Backend:** TypeScript with the Express.js framework
 - **Database:** MongoDB with Mongoose (ODM)
 

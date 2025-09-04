@@ -1,6 +1,7 @@
-import { Schema, model } from 'mongoose';
-import { UserRole } from 'common/constants/enums';
-interface IUser {
+import { Schema, model } from "mongoose";
+import { UserRole } from "common/constants/enums";
+
+export interface IUser {
   id: string;
   username: string;
   password: string;
@@ -24,4 +25,5 @@ const userSchema = new Schema<IUser>({
   isActive: { type: Boolean, default: true },
 });
 
-export const User = model<IUser>('User', userSchema);
+const User = model<IUser>("User", userSchema);
+export default User;
