@@ -4,6 +4,7 @@ const MESSAGE = {
   USER_CREATION_FAILED: "User creation failed.",
   USER_CREATED_SUCCESS: "User created successfully.",
   LOGIN_SUCCESS: "Login successful.",
+  LOGIN_FAILED: "Login failed.",
 };
 
 export default MESSAGE;

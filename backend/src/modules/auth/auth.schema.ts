@@ -10,3 +10,8 @@ export const authSignUpSchema = z.object({
   role: z.enum(UserRole, "Invalid role"),
   isActive: z.boolean().default(true),
 });
+
+export const authSignInSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});

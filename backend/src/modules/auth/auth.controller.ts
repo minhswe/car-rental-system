@@ -10,3 +10,11 @@ export const signUpAuthController = asyncHandler(async (req, res) => {
   }
   createResponse(res, 201, MESSAGE.USER_CREATED_SUCCESS, user);
 });
+
+export const signInAuthController = asyncHandler(async (req, res) => {
+  const { user, accessToken } = await authService.signInAuthService(req.body);
+  if (!user || !accessToken) {
+    createResponse(res, 400, MESSAGE.LOGIN_FAILED);
+  }
+  createResponse(res, 200, MESSAGE.LOGIN_SUCCESS, { user, accessToken });
+});

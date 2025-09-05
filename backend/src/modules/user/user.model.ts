@@ -13,6 +13,11 @@ export interface IUser {
   isActive?: boolean;
 }
 
+export interface ISignIn {
+  username: string;
+  password: string;
+}
+
 const userSchema = new Schema<IUser>({
   id: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
