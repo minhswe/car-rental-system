@@ -2,18 +2,18 @@ import { Router } from "express";
 import validateBodyRequest from "common/middlewares/validate-body.middleware";
 import { signUpAuthController, signInAuthController } from "./auth.controller";
 import { authSignInSchema, authSignUpSchema } from "./auth.schema";
-const router = Router();
+const authRouter = Router();
 
-router.post(
+authRouter.post(
   "/signup",
   validateBodyRequest(authSignUpSchema),
   signUpAuthController
 );
 
-router.get(
+authRouter.get(
   "/signin",
   validateBodyRequest(authSignInSchema),
   signInAuthController
 );
 
-export default router;
+export default authRouter;

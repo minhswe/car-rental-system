@@ -6,8 +6,7 @@ import {
   VehicleTransmission,
 } from "common/constants/enums";
 
-interface IVehicle {
-  id: number;
+export interface IVehicle {
   make: VehicleMake;
   model: string;
   licensePlate: string;
@@ -23,7 +22,6 @@ interface IVehicle {
 }
 
 const vehicleSchema = new Schema<IVehicle>({
-  id: { type: Number, required: true, unique: true },
   make: { type: String, enum: Object.values(VehicleMake), required: true },
   model: { type: String, required: true },
   licensePlate: { type: String, required: true },

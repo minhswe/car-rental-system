@@ -32,7 +32,7 @@ export const signInAuthService = async (userData: ISignIn) => {
     return throwError(400, MESSAGE.INVALID_CREDENTIALS);
   }
   const accessToken = generateToken({
-    id: existingUser.id,
+    username: existingUser.username,
     role: existingUser.role,
   });
   existingUser.password = undefined as any;

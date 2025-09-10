@@ -1,0 +1,16 @@
+import { createResponse } from "common/configs/response.config";
+import asyncHandler from "common/utils/async-handler";
+import * as vehicleService from "./vehicle.service";
+import { Request, Response } from "express";
+import MESSAGE from "./vehicle.message";
+
+export const createVehicle = asyncHandler(
+  async (req: Request, res: Response) => {
+    console.log("Request Body:", req.body); // Debugging line
+    const vehicle = await vehicleService.createVehicleService(req.body);
+    if (!vehicle) {
+      return createResponse(res, 400, MESSAGE.VEHICLE_CREATION_FAILED);
+    }
+    return createResponse(res, 201, MESSAGE.VEHICLE_CREATED, vehicle);
+  }
+);
