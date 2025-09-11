@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+
+:root {
+  --blue: #0e0620;
+  --white: #fff;
+  --green: #593cfb;
+}
+
+.btnHome:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--green);
+  z-index: -1;
+  transition: 0.2s ease;
+}
+
+.btnHome:hover {
+  color: var(--white);
+  background: var(--green);
+  transition: 0.2s ease;
+}
+
+.btnHome:hover:before {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin-top: 70px;
+    margin-bottom: 70px;
+  }
+}

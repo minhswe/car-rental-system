@@ -4,6 +4,15 @@ export enum UserRole {
   CUSTOMER = "Customer",
 }
 
+export enum BookingStatus {
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  REJECTED = "rejected",
+  CANCELLED = "cancelled",
+  COMPLETED = "completed",
+  INPROCESS = "in-process",
+}
+
 export enum VehicleMake {
   //Hãng xe Nhật Bản
   TOYOTA = "Toyota",

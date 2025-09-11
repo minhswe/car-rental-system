@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Counter } from "common/utils/counter.model";
+import { BookingStatus } from "../../common/constants/enums";
 interface IBooking {
   id: number;
   bookingStartAt: Date;
@@ -7,6 +7,7 @@ interface IBooking {
   totalPrice: number;
   vehicleId: number;
   customerId: string;
+  status: BookingStatus;
 }
 
 const bookingSchema = new Schema<IBooking>({
@@ -16,18 +17,11 @@ const bookingSchema = new Schema<IBooking>({
   totalPrice: { type: Number, required: true },
   vehicleId: { type: Number, required: true, ref: "Vehicle" },
   customerId: { type: String, required: true, ref: "User" },
-});
-
-bookingSchema.pre("save", async function (next) {
-  if (this.isNew) {
-    const counter = await Counter.findByIdAndUpdate(
-      { _id: "bookingId" },
-      { $inc: { seq: 1 } },
-      { new: true, upsert: true }
-    );
-    this.id = counter!.seq;
-  }
-  next();
+  status: {
+    type: String,
+    enum: Object.values(BookingStatus),
+    default: BookingStatus.PENDING,
+  },
 });
 
 export const Booking = model<IBooking>("Booking", bookingSchema);

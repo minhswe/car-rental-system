@@ -1,7 +1,6 @@
-import {Menu, Button, Space} from 'antd';
-import { MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
-import {Link, useLocation} from 'react-router-dom';
-import { useState, useEffect, use } from "react";
+import { Menu, Button, Space } from "antd";
+import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const location = useLocation();
@@ -22,32 +21,82 @@ const Header = () => {
     {
       key: "/",
       label: (
-        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+        <Link to="/" onClick={() => setMenuOpen(false)}>
+          Home
+        </Link>
       ),
     },
     {
-      key: "/provider",
+      key: "/about",
       label: (
-        <Link to="/" onClick={() => setMenuOpen(false)}>Provider</Link>
+        <Link to="/carlisting" onClick={() => setMenuOpen(false)}>
+          Car Listing
+        </Link>
+      ),
+    },
+    {
+      key: "/carowner",
+      label: (
+        <Link to="/carowner" onClick={() => setMenuOpen(false)}>
+          Car Owner
+        </Link>
       ),
     },
   ];
 
-  return(
-    <header>
-      <div>
+  return (
+    <header
+      style={{
+        background: "#fff",
+        padding: "16px 24px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        width: "100%",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         {/* LOGO */}
-        <Link to="/"></Link>
+        <Link to="/">CAR RENTAL</Link>
 
         {/* menu desktop */}
         <Menu
-        mode='horizontal'
-        selectedKeys={[location.pathname]}
-        items={menuItems}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            border: "none",
+            background: "transparent",
+            display: "flex",
+          }}
+          mode="horizontal"
+          selectedKeys={[location.pathname]}
+          items={menuItems}
         />
+
+        <Space>
+          <Button type="link">
+            <Link to="/signin" style={{ color: "#333" }}>
+              Sign In
+            </Link>
+          </Button>
+          <Button type="primary">
+            <Link to="/signup" style={{ color: "#fff" }}>
+              Sign Up
+            </Link>
+          </Button>
+        </Space>
       </div>
     </header>
-  )
-}
+  );
+};
 
 export default Header;

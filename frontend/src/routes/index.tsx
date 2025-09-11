@@ -15,7 +15,7 @@ const getRedicrectPath = (user: { role: RoleEnum } | null) => {
     case RoleEnum.ADMIN:
       return "/admin/dashboard";
     case RoleEnum.PROVIDER:
-      return "/provider";
+      return "/provider/dashboard";
     case RoleEnum.CUSTOMER:
       return "/customer";
     default:
