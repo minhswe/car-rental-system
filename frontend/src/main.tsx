@@ -3,18 +3,21 @@ import { createRoot } from "react-dom/client";
 import { ConfigProvider } from "antd";
 import "./index.css";
 import App from "./App.tsx";
-
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./common/services/queryClient.ts";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ConfigProvider
-      theme={{
-        token: {
-          fontFamily: "Inter, sans-serif", // ✅ override AntD token
-          colorPrimary: "#593cfb",
-        },
-      }}
-    >
-      <App />
-    </ConfigProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConfigProvider
+        theme={{
+          token: {
+            fontFamily: "Inter, sans-serif", // ✅ override AntD token
+            colorPrimary: "#593cfb",
+          },
+        }}
+      >
+        <App />
+      </ConfigProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

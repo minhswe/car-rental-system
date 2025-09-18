@@ -7,6 +7,7 @@ import {
 import NotFoundPage from "../pages/common/NotFoundPage";
 
 import commonRoutes from "./commonRoutes";
+import authRoutes from "./authRoutes";
 import { RoleEnum } from "../common/types";
 
 const getRedicrectPath = (user: { role: RoleEnum } | null) => {
@@ -35,7 +36,8 @@ const routes: RouteObject[] = [
       />
     ),
   },
-  {path: "*", element: <NotFoundPage />},
+  ...authRoutes,
+  { path: "*", element: <NotFoundPage /> },
 ];
 
 const Routes = createBrowserRouter(routes);

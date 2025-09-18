@@ -1,5 +1,4 @@
-import React from "react";
-import { Flex, Button } from "antd";
+import { Flex } from "antd";
 import { Link } from "react-router-dom";
 import FacebookFilled from "@ant-design/icons/lib/icons/FacebookFilled";
 import InstagramFilled from "@ant-design/icons/lib/icons/InstagramFilled";

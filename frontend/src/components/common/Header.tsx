@@ -84,12 +84,12 @@ const Header = () => {
 
         <Space>
           <Button type="link">
-            <Link to="/signin" style={{ color: "#333" }}>
+            <Link to="/sign-in" style={{ color: "#333" }}>
               Sign In
             </Link>
           </Button>
           <Button type="primary">
-            <Link to="/signup" style={{ color: "#fff" }}>
+            <Link to="/sign-up" style={{ color: "#fff" }}>
               Sign Up
             </Link>
           </Button>
