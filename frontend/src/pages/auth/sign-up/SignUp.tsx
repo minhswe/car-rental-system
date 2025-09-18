@@ -149,7 +149,7 @@ const SignUpPage = () => {
               name="password"
               control={control}
               render={({ field }) => (
-                <Input
+                <Input.Password
                   {...field}
                   placeholder="Enter your password"
                   style={{ height: 40 }}
@@ -166,7 +166,7 @@ const SignUpPage = () => {
               name="confirmPassword"
               control={control}
               render={({ field }) => (
-                <Input
+                <Input.Password
                   {...field}
                   placeholder="Enter your password"
                   style={{ height: 40 }}
