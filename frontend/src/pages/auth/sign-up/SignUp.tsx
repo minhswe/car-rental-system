@@ -2,13 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Link } from "react-router-dom";
-import { RoleEnum } from "../../../common/types";
-import Notify from "../../../components/common/Notification";
-import {
-  signUpSchema,
-  signUpFormData,
-} from "../../../common/schemas/auth.schema";
-import { signUpUser } from "../../../common/services/auth.service";
+import { RoleEnum } from "@/common/types";
+import Notify from "@/components/common/Notification";
+import { signUpSchema, signUpFormData } from "@/common/schemas/auth.schema";
+import { signUpUser } from "@/common/services/auth.service";
 import {
   Form,
   Input,
@@ -19,9 +16,8 @@ import {
   Alert,
   message,
   Select,
-  notification,
 } from "antd";
-import { ConfirmModal } from "../../../components/common/Modal";
+import { ConfirmModal } from "@/components/common/Modal";
 import { useState } from "react";
 
 const { Title, Text } = Typography;
@@ -237,7 +233,7 @@ const SignUpPage = () => {
           <div style={{ textAlign: "center", marginBottom: 16 }}>
             <Text style={{ color: "#595959" }}>
               Already have an account?{" "}
-              <Link to="/login" style={{ color: "#1890ff", fontWeight: 500 }}>
+              <Link to="/sign-in" style={{ color: "#1890ff", fontWeight: 500 }}>
                 Sign in instead
               </Link>
             </Text>

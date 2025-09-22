@@ -1,9 +1,10 @@
-import User, { IUser, ISignIn } from "../../modules/user/user.model";
+import User, { IUser } from "@/modules/user/user.model";
+import { ISignIn } from "@/types/auth.type";
 import { HydratedDocument } from "mongoose";
 import { v4 as uuid } from "uuid";
-import { hashPassword, comparePassword } from "common/utils/password-handler";
-import { throwError } from "common/configs/error.config";
-import { generateToken } from "common/utils/jwt";
+import { hashPassword, comparePassword } from "@/common/utils/password-handler";
+import { throwError } from "@/common/configs/error.config";
+import { generateToken } from "@/common/utils/jwt";
 import MESSAGE from "./auth.message";
 // Define the type of the returned document
 type UserResponse = Omit<HydratedDocument<IUser>, "password">;
@@ -36,5 +37,6 @@ export const signInAuthService = async (userData: ISignIn) => {
     role: existingUser.role,
   });
   existingUser.password = undefined as any;
+  console.log("existingUser:", existingUser);
   return { user: existingUser, accessToken };
 };

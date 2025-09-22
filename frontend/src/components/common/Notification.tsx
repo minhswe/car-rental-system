@@ -14,7 +14,7 @@ type NotificationPlacement =
 type NotificationProps = {
   open: boolean;
   type: NotificationType;
-  message: string;
+  message: React.ReactNode;
   description?: string;
   placement?: NotificationPlacement;
   duration?: number;

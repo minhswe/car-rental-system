@@ -1,7 +1,7 @@
-import { verifyToken } from "common/utils/jwt";
-import { createResponse } from "common/configs/response.config";
+import { verifyToken } from "@/common/utils/jwt";
+import { createResponse } from "@/common/configs/response.config";
 import { Request, Response, NextFunction } from "express";
-import { UserRole } from "common/constants/enums";
+import { UserRole } from "@/common/constants/enums";
 
 export const authMiddleware = (
   req: Request,

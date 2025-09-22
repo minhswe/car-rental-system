@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { BookingStatus } from "../../common/constants/enums";
+import { BookingStatus } from "@/common/constants/enums";
 interface IBooking {
   id: number;
   bookingStartAt: Date;

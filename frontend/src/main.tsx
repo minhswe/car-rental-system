@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntApp } from "antd";
 import "./index.css";
 import App from "./App.tsx";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -16,7 +16,9 @@ createRoot(document.getElementById("root")!).render(
           },
         }}
       >
-        <App />
+        <AntApp>
+          <App />
+        </AntApp>
       </ConfigProvider>
     </QueryClientProvider>
   </StrictMode>

@@ -1,7 +1,7 @@
 import type { RouteObject } from "react-router-dom";
-import CommonLayout from "../components/layouts/CommonLayout";
-import HomePage from "../pages/common/HomePage";
-import AboutPage from "../pages/common/AboutPage";
+import CommonLayout from "@/components/layouts/CommonLayout";
+import HomePage from "@/pages/common/HomePage";
+import AboutPage from "@/pages/common/AboutPage";
 
 const commonRoutes: RouteObject[] = [
   {

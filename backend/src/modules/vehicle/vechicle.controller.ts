@@ -1,5 +1,5 @@
-import { createResponse } from "common/configs/response.config";
-import asyncHandler from "common/utils/async-handler";
+import { createResponse } from "@/common/configs/response.config";
+import asyncHandler from "@/common/utils/async-handler";
 import * as vehicleService from "./vehicle.service";
 import { Request, Response } from "express";
 import MESSAGE from "./vehicle.message";

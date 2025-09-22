@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import mongoose, { MongooseError } from "mongoose";
-import { throwError } from "common/configs/error.config";
+import { throwError } from "@/common/configs/error.config";
 const asyncHandler =
   (
     func: (req: Request, res: Response, next: NextFunction) => Promise<any>

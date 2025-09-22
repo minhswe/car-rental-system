@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UserRole } from "../../common/constants/enums";
+import { UserRole } from "@/common/constants/enums";
 
 export const authSignUpSchema = z.object({
   username: z.string().min(1, "Username is required"),

@@ -4,11 +4,11 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
-import NotFoundPage from "../pages/common/NotFoundPage";
+import NotFoundPage from "@/pages/common/NotFoundPage";
 
 import commonRoutes from "./commonRoutes";
 import authRoutes from "./authRoutes";
-import { RoleEnum } from "../common/types";
+import { RoleEnum } from "@/common/types";
 
 const getRedicrectPath = (user: { role: RoleEnum } | null) => {
   if (!user) return "/";

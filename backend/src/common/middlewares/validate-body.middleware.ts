@@ -1,4 +1,4 @@
-import { throwError } from "common/configs/error.config";
+import { throwError } from "@/common/configs/error.config";
 import { Request, Response, NextFunction } from "express";
 import mongoose, { MongooseError } from "mongoose";
 import { z } from "zod";

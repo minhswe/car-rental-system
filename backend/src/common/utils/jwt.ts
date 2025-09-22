@@ -1,7 +1,7 @@
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { throwError } from "common/configs/error.config";
-import { ENV } from "../configs/environment.config";
-import { UserRole } from "common/constants/enums";
+import { ENV } from "@/common/configs/environment.config";
+import { UserRole } from "@/common/constants/enums";
 
 interface JwtPayload {
   username: string;

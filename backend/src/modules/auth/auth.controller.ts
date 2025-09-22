@@ -1,5 +1,5 @@
-import { createResponse } from "../../common/configs/response.config";
-import asyncHandler from "../../common/utils/async-handler";
+import { createResponse } from "@/common/configs/response.config";
+import asyncHandler from "@/common/utils/async-handler";
 import MESSAGE from "./auth.message";
 import * as authService from "./auth.service";
 

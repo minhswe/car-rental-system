@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { UserRole } from "common/constants/enums";
+import { UserRole } from "@/common/constants/enums";
 
 export interface IUser {
   id: string;
@@ -11,11 +11,6 @@ export interface IUser {
   avatar?: string;
   role: UserRole;
   isActive?: boolean;
-}
-
-export interface ISignIn {
-  username: string;
-  password: string;
 }
 
 const userSchema = new Schema<IUser>({

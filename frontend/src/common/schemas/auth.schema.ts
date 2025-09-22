@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { RoleEnum } from "../types/index";
+import { RoleEnum } from "@/common/types/index";
 export const signUpSchema = z
   .object({
     username: z.string().min(1, "Username is required"),
@@ -15,12 +15,21 @@ export const signUpSchema = z
     path: ["confirmPassword"],
   });
 
-export type signUpFormData = {
-  username: string;
-  password: string;
-  confirmPassword: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  role: RoleEnum.CUSTOMER | RoleEnum.PROVIDER;
-};
+export type signUpFormData = z.infer<typeof signUpSchema>;
+
+// export type signUpFormData = {
+//   username: string;
+//   password: string;
+//   confirmPassword: string;
+//   email: string;
+//   firstName?: string;
+//   lastName?: string;
+//   role: RoleEnum.CUSTOMER | RoleEnum.PROVIDER;
+// };
+
+export const signinSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type signInFormData = z.infer<typeof signinSchema>;

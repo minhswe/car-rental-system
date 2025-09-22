@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { MessageSenderType } from "common/constants/enums";
+import { MessageSenderType } from "@/common/constants/enums";
 
 interface IMessage {
   id: string;
