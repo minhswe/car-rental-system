@@ -1,5 +1,5 @@
 import User, { IUser } from "@/modules/user/user.model";
-import { ISignIn } from "@/types/auth.type";
+import { ISignIn, IAuthResponse, IUserResponse } from "@/types/auth.type";
 import { HydratedDocument } from "mongoose";
 import { v4 as uuid } from "uuid";
 import { hashPassword, comparePassword } from "@/common/utils/password-handler";
@@ -19,24 +19,36 @@ export const signUpAuthService = async (
   return userWithoutPassword as UserResponse;
 };
 
-export const signInAuthService = async (userData: ISignIn) => {
+export const signInAuthService = async (
+  userData: ISignIn
+): Promise<IAuthResponse> => {
   const { username, password } = userData;
+
   const existingUser = await User.findOne({ username });
   if (!existingUser) {
     return throwError(400, MESSAGE.INVALID_CREDENTIALS);
   }
+
   const isPasswordValid = await comparePassword(
     password,
     existingUser.password
   );
+
   if (!isPasswordValid) {
     return throwError(400, MESSAGE.INVALID_CREDENTIALS);
   }
+
   const accessToken = generateToken({
+    id: existingUser.id,
     username: existingUser.username,
     role: existingUser.role,
   });
-  existingUser.password = undefined as any;
-  console.log("existingUser:", existingUser);
-  return { user: existingUser, accessToken };
+
+  const userResponse: IUserResponse = {
+    id: existingUser.id,
+    username: existingUser.username,
+    role: existingUser.role,
+  };
+
+  return { user: userResponse, accessToken };
 };
