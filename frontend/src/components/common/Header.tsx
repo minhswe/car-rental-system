@@ -1,4 +1,4 @@
-import { Menu, Button, Space, Avatar, Dropdown } from "antd";
+import { Menu, Button, Space, Avatar, Dropdown, MenuProps } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,14 +46,14 @@ const Header = () => {
         </Link>
       ),
     },
-    {
-      key: "/carowner",
-      label: (
-        <Link to="/carowner" onClick={() => setMenuOpen(false)}>
-          Car Owner
-        </Link>
-      ),
-    },
+    // {
+    //   key: "/carowner",
+    //   label: (
+    //     <Link to="/carowner" onClick={() => setMenuOpen(false)}>
+    //       Car Owner
+    //     </Link>
+    //   ),
+    // },
   ];
 
   const userMenu = {
@@ -70,11 +70,17 @@ const Header = () => {
       },
       // { type: "divider" },
       {
-        key: "Sign Out",
+        key: "signout",
         label: "Sign Out",
         icon: <LogoutOutlined />,
       },
     ],
+  };
+
+  const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "signout") {
+      dispatch(signout());
+    }
   };
 
   // const authState = useSelector((state: RootState) => state.auth);
@@ -121,8 +127,13 @@ const Header = () => {
         {user ? (
           <Space>
             <span>Welcome, {user.username}</span>
-            <Dropdown menu={userMenu} placement="bottomRight">
-              <Avatar src={user.avatar} icon={<UserOutlined />} />
+            <Dropdown
+              menu={{ items: userMenu.items, onClick: handleMenuClick }}
+              placement="bottomRight"
+            >
+              <Space style={{ cursor: "pointer" }}>
+                <Avatar src={user.avatar} icon={<UserOutlined />} />
+              </Space>
             </Dropdown>
           </Space>
         ) : (

@@ -9,6 +9,7 @@ import NotFoundPage from "@/pages/common/NotFoundPage";
 import commonRoutes from "./commonRoutes";
 import authRoutes from "./authRoutes";
 import { RoleEnum } from "@/common/types";
+import providerRoutes from "./providerRoutes";
 
 const getRedicrectPath = (user: { role: RoleEnum } | null) => {
   if (!user) return "/";
@@ -37,6 +38,7 @@ const routes: RouteObject[] = [
     ),
   },
   ...authRoutes,
+  ...providerRoutes,
   { path: "*", element: <NotFoundPage /> },
 ];
 
