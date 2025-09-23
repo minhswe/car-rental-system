@@ -1,11 +1,23 @@
-import { Menu, Button, Space } from "antd";
+import { Menu, Button, Space, Avatar, Dropdown } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/common/stores/store";
+import { signout } from "@/common/stores/authSlice";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  ProfileOutlined,
+} from "@ant-design/icons";
+import { keyof } from "zod";
 const Header = () => {
   const location = useLocation();
+
   const [menuOpen, setMenuOpen] = useState(true);
 
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   const handleResize = () => {
   //     if (window.innerWidth >= 768){
@@ -43,6 +55,30 @@ const Header = () => {
       ),
     },
   ];
+
+  const userMenu = {
+    items: [
+      {
+        key: "profile",
+        label: "Profile",
+        icon: <UserOutlined />,
+      },
+      {
+        key: "settings",
+        label: "Settings",
+        icon: <SettingOutlined />,
+      },
+      // { type: "divider" },
+      {
+        key: "Sign Out",
+        label: "Sign Out",
+        icon: <LogoutOutlined />,
+      },
+    ],
+  };
+
+  // const authState = useSelector((state: RootState) => state.auth);
+  // console.log("Auth state: ", authState.user?.avatar);
 
   return (
     <header
@@ -82,18 +118,27 @@ const Header = () => {
           items={menuItems}
         />
 
-        <Space>
-          <Button type="link">
-            <Link to="/sign-in" style={{ color: "#333" }}>
-              Sign In
-            </Link>
-          </Button>
-          <Button type="primary">
-            <Link to="/sign-up" style={{ color: "#fff" }}>
-              Sign Up
-            </Link>
-          </Button>
-        </Space>
+        {user ? (
+          <Space>
+            <span>Welcome, {user.username}</span>
+            <Dropdown menu={userMenu} placement="bottomRight">
+              <Avatar src={user.avatar} icon={<UserOutlined />} />
+            </Dropdown>
+          </Space>
+        ) : (
+          <Space>
+            <Button type="link">
+              <Link to="/sign-in" style={{ color: "#333" }}>
+                Sign In
+              </Link>
+            </Button>
+            <Button type="primary">
+              <Link to="/sign-up" style={{ color: "#fff" }}>
+                Sign Up
+              </Link>
+            </Button>
+          </Space>
+        )}
       </div>
     </header>
   );

@@ -17,10 +17,15 @@ import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Notify from "@/components/common/Notification";
 import React, { useState } from "react";
+import { useDispatch, UseDispatch } from "react-redux";
+import { signinSuccess } from "@/common/stores/authSlice";
+import { AppDispatch } from "@/common/stores/store";
 
 const { Title, Text } = Typography;
 
 const SignInPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [notify, setNotify] = useState<{
     open: boolean;
     type: "success" | "error";
@@ -34,7 +39,9 @@ const SignInPage: React.FC = () => {
     description: "",
     onClose: undefined,
   });
+
   const navigate = useNavigate();
+
   const { mutate, isPending, error } = useMutation({
     mutationFn: signInUser,
     onSuccess: (data) => {
@@ -46,11 +53,15 @@ const SignInPage: React.FC = () => {
         description: "Welcome back!",
       });
 
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      // if (data.refreshToken) {
-      //   localStorage.setItem("refreshToken", data.refreshToken);
-      // }
+      if (data.refreshToken) {
+        localStorage.setItem("refreshToken", data.refreshToken);
+      }
+      dispatch(
+        signinSuccess({
+          user: data.user,
+          accessToken: data.accessToken,
+        })
+      );
       switch (data.user.role) {
         case RoleEnum.ADMIN:
           navigate("/admin/dashboard");
