@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "@/common/configs/error.config";
+import multer from "multer";
 
 export const errorHandler = (
   error: Error,
@@ -9,17 +10,33 @@ export const errorHandler = (
 ) => {
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
-      status: "error",
-      statusCode: error.statusCode,
-      message: error.message,
-      details: error.details ?? undefined,
+      success: false,
+      error: {
+        code: error.name,
+        message: error.message,
+        details: error.details ?? undefined,
+      },
+    });
+  }
+  if (error instanceof multer.MulterError) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        status: "error",
+        statusCode: 400,
+        message: error.message,
+        details: error.field ?? undefined,
+      },
     });
   }
 
   console.error("UNEXPECTED ERROR:", error);
 
   return res.status(500).json({
-    status: "error",
-    message: "Internal Server Error",
+    success: false,
+    error: {
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Something went wrong",
+    },
   });
 };

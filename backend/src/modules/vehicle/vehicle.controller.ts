@@ -14,3 +14,14 @@ export const createVehicle = asyncHandler(
     return createResponse(res, 201, MESSAGE.VEHICLE_CREATED, vehicle);
   }
 );
+
+export const getProviderVehicles = asyncHandler(
+  async (req: Request, res: Response) => {
+    const providerId = req.user as any;
+    const vehicles = await vehicleService.getVehiclesByProvider(providerId);
+    if (!vehicles || vehicles.length === 0) {
+      return createResponse(res, 404, MESSAGE.VEHICLE_NOT_FOUND);
+    }
+    return createResponse(res, 200, MESSAGE.VEHICLES_FETCHED, vehicles);
+  }
+);

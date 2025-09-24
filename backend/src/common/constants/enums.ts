@@ -104,6 +104,9 @@ export enum VehicleStatus {
   UNAVAILABLE = "Unavailable",
   IN_MAINTENANCE = "In Maintenance",
   BOOKED = "Booked",
+  WAITING_FOR_APPROVAL = "Waiting for Approval",
+  WWAITING_FOR_PICKUP = "Waiting for Pickup",
+  REJECTED = "Rejected",
 }
 
 export enum MessageSenderType {

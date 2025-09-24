@@ -27,9 +27,9 @@ export const roleRequireMiddleware = (role: UserRole | UserRole[]) => {
   const allowRoles = Array.isArray(role) ? role : [role];
 
   return (req: Request, res: Response, next: NextFunction) => {
-    console.log(req);
+    console.log("roleRequireMiddleware -> user:", req.user);
     if (!req.user) {
-      return createResponse(res, 403, "Unauthorized: No user found");
+      return createResponse(res, 401, "Unauthorized: No user found");
     }
     if (!allowRoles.includes(req.user.role)) {
       return createResponse(
