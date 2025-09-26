@@ -6,7 +6,6 @@ import {
 } from "common/middlewares/auth.middleware";
 import { UserRole } from "common/constants/enums";
 import { uploadVehicleImages } from "@/common/middlewares/upload.middleware";
-import upload from "@/common/configs/multer.config";
 
 export const vehicleRouter = Router();
 
@@ -14,7 +13,7 @@ vehicleRouter.post(
   "/",
   authMiddleware,
   roleRequireMiddleware(UserRole.PROVIDER),
-  upload.any(),
+  uploadVehicleImages,
   vehicleController.createVehicle
 );
 

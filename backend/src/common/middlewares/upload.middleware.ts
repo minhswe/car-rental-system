@@ -4,11 +4,12 @@ import path from "path";
 import { Request } from "express";
 import { ENV } from "../configs/environment.config";
 import { dir } from "console";
+import fs from "fs";
 
 const uploadDir = ENV.UPLOAD_DIR;
 const maxFileSize = ENV.MAX_FILE_SIZE;
 const maxFileCount = ENV.MAX_FILE_COUNT;
-
+const uploadPath = path.join(__dirname, "../../../uploads");
 const vehicleStorage: StorageEngine = multer.diskStorage({
   destination: (
     req: Request,
@@ -16,6 +17,9 @@ const vehicleStorage: StorageEngine = multer.diskStorage({
     cb: (error: Error | null, destination: string) => void
   ) => {
     const vehicleDir = path.join(uploadDir, "vehicles");
+    if (!fs.existsSync(vehicleDir)) {
+      fs.mkdirSync(vehicleDir, { recursive: true });
+    }
     cb(null, vehicleDir);
   },
   filename: (

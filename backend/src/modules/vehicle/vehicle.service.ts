@@ -7,8 +7,8 @@ export const createVehicleService = async (
   vehicleData: Partial<IVehicle>,
   files?: Express.Multer.File[]
 ): Promise<IVehicle> => {
-  console.log("vehicle data: ", vehicleData);
-  console.log("files: ", files);
+  console.log("service-vehicle data: ", vehicleData);
+  console.log("service-files: ", files);
   const existingLicensePlate = await Vehicle.findOne({
     licensePlate: vehicleData.licensePlate,
   });
@@ -17,7 +17,11 @@ export const createVehicleService = async (
     return throwError(400, "License plate already exists");
   }
 
-  const filePaths = files?.map(file => `/uploads/${file.filename}`) || [];
+  const filePaths =
+    files && Array.isArray(files)
+      ? files.map(file => `/uploads/vehicles/${file.filename}`)
+      : [];
+  console.log("service-filePaths: ", filePaths);
 
   const vehicle = await Vehicle.create([
     {
