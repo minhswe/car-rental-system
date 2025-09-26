@@ -113,3 +113,19 @@ export enum MessageSenderType {
   USER = "User",
   PROVIDER = "Provider",
 }
+
+export enum VehicleInsurance {
+  BAOVIET = "Bảo Việt",
+  PVI = "PVI",
+  PTI = "PTI",
+  BIC = "BIC",
+  MIC = "MIC",
+  BAOMINH = "Bảo Minh",
+  VIETTELMONEY = "Viettel Money",
+  VNI = "VNI",
+  LIBERTY = "Liberty",
+  MOMO = "MoMo",
+  PIJICO = "Pjico",
+  AIA = "AIA",
+  ANOTHER = "Others...",
+}

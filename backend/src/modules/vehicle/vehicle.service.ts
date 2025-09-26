@@ -1,11 +1,43 @@
+import { start } from "repl";
 import { IVehicle, Vehicle } from "./vechicle.model";
+import { startSession } from "mongoose";
+import { throwError } from "@/common/configs/error.config";
 
-export const createVehicleService = async (vehicleData: IVehicle) => {
-  const vehicle = await Vehicle.create(vehicleData);
-  return vehicle;
+export const createVehicleService = async (
+  vehicleData: Partial<IVehicle>,
+  files?: Express.Multer.File[]
+): Promise<IVehicle> => {
+  console.log("vehicle data: ", vehicleData);
+  console.log("files: ", files);
+  const existingLicensePlate = await Vehicle.findOne({
+    licensePlate: vehicleData.licensePlate,
+  });
+
+  if (existingLicensePlate) {
+    return throwError(400, "License plate already exists");
+  }
+
+  const filePaths = files?.map(file => `/uploads/${file.filename}`) || [];
+
+  const vehicle = await Vehicle.create([
+    {
+      ...vehicleData,
+      images: filePaths,
+    },
+  ]);
+  const createVehicle = vehicle[0];
+
+  return createVehicle;
 };
 
+// export const createVehicleService = async (vehicleData: IVehicle) => {
+//   const vehicle = await Vehicle.create(vehicleData);
+//   return vehicle;
+// };
+
 export const getVehiclesByProvider = async (providerId: string) => {
-  const cars = await Vehicle.find({ provider: providerId });
+  console.log("Provider ID:", providerId); // Debugging line
+  const cars = await Vehicle.find({ providerId: providerId });
+  console.log("Cars by provider:", cars);
   return cars;
 };

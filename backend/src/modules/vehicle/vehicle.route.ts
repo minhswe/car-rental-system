@@ -6,12 +6,15 @@ import {
 } from "common/middlewares/auth.middleware";
 import { UserRole } from "common/constants/enums";
 import { uploadVehicleImages } from "@/common/middlewares/upload.middleware";
+import upload from "@/common/configs/multer.config";
+
 export const vehicleRouter = Router();
 
 vehicleRouter.post(
   "/",
   authMiddleware,
   roleRequireMiddleware(UserRole.PROVIDER),
+  upload.any(),
   vehicleController.createVehicle
 );
 
@@ -23,16 +26,10 @@ vehicleRouter.post(
 );
 
 export const providerVehicleRouter = Router({ mergeParams: true });
+
 providerVehicleRouter.get(
   "/vehicles",
   authMiddleware,
   roleRequireMiddleware(UserRole.PROVIDER),
   vehicleController.getProviderVehicles
 );
-
-// vehicleRouter.get(
-//   "/provider/vehicles",
-//   authMiddleware,
-//   roleRequireMiddleware(UserRole.PROVIDER),
-//   vehicleController.getProviderVehicles
-// );

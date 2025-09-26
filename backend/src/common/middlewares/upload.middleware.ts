@@ -3,18 +3,20 @@ import multer, { Multer, StorageEngine, FileFilterCallback } from "multer";
 import path from "path";
 import { Request } from "express";
 import { ENV } from "../configs/environment.config";
+import { dir } from "console";
 
 const uploadDir = ENV.UPLOAD_DIR;
 const maxFileSize = ENV.MAX_FILE_SIZE;
 const maxFileCount = ENV.MAX_FILE_COUNT;
 
-const storage: StorageEngine = multer.diskStorage({
+const vehicleStorage: StorageEngine = multer.diskStorage({
   destination: (
     req: Request,
     file: Express.Multer.File,
     cb: (error: Error | null, destination: string) => void
   ) => {
-    cb(null, uploadDir);
+    const vehicleDir = path.join(uploadDir, "vehicles");
+    cb(null, vehicleDir);
   },
   filename: (
     req: Request,
@@ -48,7 +50,7 @@ const fileFilter = (
 };
 
 export const uploadVehicleImages = multer({
-  storage,
+  storage: vehicleStorage,
   fileFilter,
   limits: { fileSize: maxFileSize }, // 5 MB limit
-}).array("images", maxFileCount);
+}).array("files", maxFileCount);
