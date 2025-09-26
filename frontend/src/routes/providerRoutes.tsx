@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import { RoleEnum } from "@/common/types";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProviderLayout from "@/components/layouts/ProviderLayout";
-import VehicleManagment from "@/pages/provider/VehicleManagment";
+import VehicleManagment from "@/pages/provider/vehicle/VehicleManagment";
 const providerRoutes: RouteObject[] = [
   {
     path: "/provider",

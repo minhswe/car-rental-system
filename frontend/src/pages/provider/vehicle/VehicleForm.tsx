@@ -82,8 +82,43 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
     setFileList(updated);
   };
 
+  const customRules = [
+    {
+      validator: async () => {
+        if (fileList.length === 0) {
+          return Promise.reject(new Error("Please upload at least 1 image"));
+        }
+
+        if (fileList.length > 5) {
+          return Promise.reject(
+            new Error("You can upload up to 5 images only")
+          );
+        }
+
+        // Check type & size
+        for (const file of fileList) {
+          const isImage =
+            file.type?.startsWith("image/") ||
+            file.name?.match(/\.(jpg|jpeg|png)$/i);
+          if (!isImage) {
+            return Promise.reject(new Error("Only JPG/PNG images are allowed"));
+          }
+
+          const sizeOk =
+            !file.originFileObj || file.originFileObj.size / 1024 / 1024 < 2;
+          if (!sizeOk) {
+            return Promise.reject(new Error("Image must be smaller than 2MB"));
+          }
+        }
+
+        return Promise.resolve();
+      }, // Added missing comma here
+    },
+  ];
+
   const beforeUpload = () => {
     // Prevent auto upload
+    console.log("Before upload called");
     return false;
   };
 
@@ -177,10 +212,13 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="vehicleStatus" label="Status">
+          <Form.Item
+            name="vehicleStatus"
+            label="Status"
+            initialValue={VehicleStatus.WAITING_FOR_APPROVAL}
+          >
             <Select
               placeholder="Select a status"
-              defaultValue={VehicleStatus.WAITING_FOR_APPROVAL}
               options={Object.values(VehicleStatus).map((s) => ({
                 value: s,
                 label: s,
@@ -247,15 +285,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
             valuePropName="fileList"
             getValueFromEvent={(e) => {
               console.log("Upload event:", e);
-              // e có thể là fileList trực tiếp hoặc object có fileList
-              if (Array.isArray(e)) {
-                return e;
-              }
+              if (Array.isArray(e)) return e;
               return e?.fileList;
             }}
-            // rules={[
-            //   { required: true, message: "Please upload at least 1 image" },
-            // ]}
+            rules={customRules}
           >
             <Upload
               listType="picture-card"
@@ -263,6 +296,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
               beforeUpload={beforeUpload}
               onPreview={handlePreview}
               onChange={handleChange}
+              maxCount={5}
             >
               {fileList.length >= 5 ? null : uploadButton}
             </Upload>

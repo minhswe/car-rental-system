@@ -1,9 +1,11 @@
 // components/CarTable.tsx
 import React from "react";
-import { Table, Button, Empty, Tag } from "antd";
+import { Table, Button, Empty, Tag, Tooltip, Space } from "antd";
 import { Vehicle } from "@/common/types/vehicle.type";
 import { VehicleStatus } from "@/common/types";
-
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import styles from "./provider.module.css";
+import { formatVietnamLicensePlate } from "@/common/utils/format";
 interface VehicleTableProps {
   vehicles: Vehicle[];
   isLoading: boolean;
@@ -22,12 +24,21 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
   const columns = [
     { title: "Make", dataIndex: "make", key: "make" },
     { title: "Model", dataIndex: "model", key: "model" },
-    { title: "License Plate", dataIndex: "licensePlate", key: "licensePlate" },
+    {
+      title: "License Plate",
+      dataIndex: "licensePlate",
+      key: "licensePlate",
+      render: (plate: string) => (
+        <span className={styles.licensePlate}>
+          {formatVietnamLicensePlate(plate)}
+        </span>
+      ),
+    },
     {
       title: "Price/Day",
       dataIndex: "pricePerDay",
       key: "pricePerDay",
-      render: (price: number) => `$${price.toLocaleString()}`,
+      render: (price: number) => `${price.toLocaleString()} VND`,
     },
     { title: "Fuel Type", dataIndex: "fuelType", key: "fuelType" },
     { title: "Transmission", dataIndex: "transmission", key: "transmission" },
@@ -54,20 +65,29 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
       title: "Actions",
       key: "actions",
       render: (_: unknown, record: Vehicle) => (
-        <div>
-          <Button type="link" className="mr-2">
-            Edit
-          </Button>
-          <Button type="link" danger>
-            Delete
-          </Button>
-        </div>
+        <Space size="middle">
+          <Tooltip title="View Vehicle">
+            <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+          </Tooltip>
+          <Tooltip title="Edit Vehicle">
+            <Button type="default" shape="circle" icon={<EditOutlined />} />
+          </Tooltip>
+          <Tooltip title="Delete Vehicle">
+            <Button
+              type="primary"
+              danger
+              shape="circle"
+              icon={<DeleteOutlined />}
+            />
+          </Tooltip>
+        </Space>
       ),
     },
   ];
 
   return (
     <Table
+      bordered
       columns={columns}
       dataSource={vehicles}
       rowKey="id"

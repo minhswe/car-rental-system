@@ -43,8 +43,10 @@ const Notify: React.FC<NotificationProps> = ({
         showProgress,
         onClose,
       });
+    } else {
+      api.destroy();
     }
-  }, [open, type, message, description, placement, duration, api, onClose]);
+  }, [open]);
 
   return <>{contextHolder}</>;
 };

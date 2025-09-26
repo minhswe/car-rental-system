@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, message, Form } from "antd";
+import { Button, Modal, Form } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getVehicles, createVehicle } from "@/common/services/provider.service";
 import VehicleTable from "./VehicleTable";
@@ -35,6 +35,7 @@ const VehicleManagement: React.FC = () => {
   const { mutateAsync: createVehicleAsync, isPending } = useMutation({
     mutationFn: createVehicle,
     onSuccess() {
+      console.log("onSuccess called");
       setNotify({
         open: true,
         type: "success",
@@ -132,15 +133,12 @@ const VehicleManagement: React.FC = () => {
       >
         Add New Car
       </Button>
-
       {error && <div className="text-red-500 mb-4">Error: {error.message}</div>}
-
       <VehicleTable
         vehicles={response.data}
         isLoading={isLoading}
         error={error}
       />
-
       <Modal
         title="Add New Car"
         open={isModalVisible}
@@ -155,13 +153,14 @@ const VehicleManagement: React.FC = () => {
           isPending={isPending}
         />
       </Modal>
-
       <Notify
         open={notify.open}
         type={notify.type}
         message={notify.message}
         description={notify.description}
-        onClose={() => setNotify((prev) => ({ ...prev, open: false }))}
+        onClose={() => {
+          setNotify((prev) => ({ ...prev, open: false }));
+        }}
       />
     </div>
   );

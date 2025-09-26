@@ -6,16 +6,16 @@ import { Link } from "react-router-dom";
 import SiderMenu from "@/components/common/SideBarMenu";
 import HeaderBar from "@/components/common/HeaderBar";
 
-const providerMenu = [
+const adminMenu = [
   {
-    key: "/provider/vehicles",
-    label: <Link to="/provider/my-vehicles">My vehicles</Link>,
+    key: "/admin/vehicle-approvals",
+    label: <Link to="/admin/vehicle-approvals">Vehicle Approvals</Link>,
   },
 ];
 
-const ProviderLayout = () => {
+const AdminLayout = () => {
   const selectedKey = useMemo(() => {
-    const match = providerMenu.find((item) =>
+    const match = adminMenu.find((item) =>
       location.pathname.startsWith(item.key)
     );
     return match ? [match.key] : [];
@@ -24,9 +24,9 @@ const ProviderLayout = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <SiderMenu
-        menuItems={providerMenu}
+        menuItems={adminMenu}
         selectedKeys={selectedKey}
-        logoText="Provider"
+        logoText="Admin"
       />
       <Layout>
         <HeaderBar />
@@ -36,4 +36,4 @@ const ProviderLayout = () => {
   );
 };
 
-export default ProviderLayout;
+export default AdminLayout;
