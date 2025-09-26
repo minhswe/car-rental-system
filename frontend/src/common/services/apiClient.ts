@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { refreshToken } from "./auth.service";
 
 interface ApiError {
@@ -46,6 +51,24 @@ const onRefreshed = (token: string) => {
   refreshSubscribers = [];
 };
 
+apiClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${token}`,
+        } as any;
+      }
+      return config;
+    }
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
@@ -56,6 +79,7 @@ apiClient.interceptors.response.use(
       !originalRequest._retry &&
       localStorage.getItem("refreshToken")
     ) {
+      originalRequest._retry = true;
       if (!isRefreshing) {
         isRefreshing = true;
         try {

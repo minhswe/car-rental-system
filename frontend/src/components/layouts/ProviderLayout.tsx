@@ -10,8 +10,8 @@ import { match } from "assert/strict";
 
 const providerMenu = [
   {
-    key: "/provider/cars",
-    label: <Link to="/provider/my-cars">My cars</Link>,
+    key: "/provider/vehicles",
+    label: <Link to="/provider/my-vehicles">My vehicles</Link>,
   },
 ];
 

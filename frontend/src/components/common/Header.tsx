@@ -1,6 +1,6 @@
 import { Menu, Button, Space, Avatar, Dropdown, MenuProps } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/common/stores/store";
 import { signout } from "@/common/stores/authSlice";
@@ -8,9 +8,7 @@ import {
   UserOutlined,
   LogoutOutlined,
   SettingOutlined,
-  ProfileOutlined,
 } from "@ant-design/icons";
-import { keyof } from "zod";
 const Header = () => {
   const location = useLocation();
 

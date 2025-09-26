@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import { RoleEnum } from "@/common/types";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProviderLayout from "@/components/layouts/ProviderLayout";
-import CarManagement from "@/pages/provider/CarManagement";
+import VehicleManagment from "@/pages/provider/VehicleManagment";
 const providerRoutes: RouteObject[] = [
   {
     path: "/provider",
@@ -13,8 +13,8 @@ const providerRoutes: RouteObject[] = [
     ),
     children: [
       {
-        path: "my-cars",
-        element: <CarManagement />,
+        path: "my-vehicles",
+        element: <VehicleManagment />,
       },
     ],
   },
