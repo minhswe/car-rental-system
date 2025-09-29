@@ -4,6 +4,11 @@ export enum UserRole {
   CUSTOMER = "Customer",
 }
 
+export enum ReviewStatus {
+  APPROVAL = "Approval",
+  REJECT = "Reject",
+}
+
 export enum BookingStatus {
   PENDING = "pending",
   CONFIRMED = "confirmed",
@@ -101,12 +106,12 @@ export enum VehicleTransmission {
 
 export enum VehicleStatus {
   AVAILABLE = "Available",
-  UNAVAILABLE = "Unavailable",
   IN_MAINTENANCE = "In Maintenance",
   BOOKED = "Booked",
   WAITING_FOR_APPROVAL = "Waiting for Approval",
-  WWAITING_FOR_PICKUP = "Waiting for Pickup",
   REJECTED = "Rejected",
+  INACTIVE = "Inactive",
+  BLOCKED = "Blocked",
 }
 
 export enum MessageSenderType {

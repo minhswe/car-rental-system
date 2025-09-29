@@ -25,5 +25,5 @@ const userSchema = new Schema<IUser>({
   isActive: { type: Boolean, default: true },
 });
 
-const User = model<IUser>("User", userSchema);
+export const User = model<IUser>("User", userSchema);
 export default User;
