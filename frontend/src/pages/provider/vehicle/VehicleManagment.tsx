@@ -20,7 +20,9 @@ const VehicleManagement: React.FC = () => {
   }>({ open: false, type: "success", message: "", description: "" });
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
   const [form] = Form.useForm();
+
   const queryClient = useQueryClient();
 
   const {

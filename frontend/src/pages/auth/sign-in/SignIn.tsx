@@ -64,7 +64,7 @@ const SignInPage: React.FC = () => {
       );
       switch (data.user.role) {
         case RoleEnum.ADMIN:
-          navigate("/admin/dashboard");
+          navigate("/admin");
           break;
         case RoleEnum.PROVIDER:
           navigate("/provider");

@@ -10,6 +10,7 @@ import commonRoutes from "./commonRoutes";
 import authRoutes from "./authRoutes";
 import { RoleEnum } from "@/common/types";
 import providerRoutes from "./providerRoutes";
+import adminRoutes from "./adminRoutes";
 
 const getRedicrectPath = (user: { role: RoleEnum } | null) => {
   if (!user) return "/";
@@ -39,6 +40,7 @@ const routes: RouteObject[] = [
   },
   ...authRoutes,
   ...providerRoutes,
+  ...adminRoutes,
   { path: "*", element: <NotFoundPage /> },
 ];
 

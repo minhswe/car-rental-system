@@ -141,3 +141,8 @@ export enum VehicleFeature {
   WIRELESS_CHARGING = "Wireless Charging",
   CWS = "Collision Warning System",
 }
+
+export enum ReviewAction {
+  APPROVE = "Approve",
+  REJECT = "Reject",
+}

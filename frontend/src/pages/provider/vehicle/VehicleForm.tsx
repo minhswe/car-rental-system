@@ -267,6 +267,33 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 
       <Row gutter={16}>
         <Col span={12}>
+          <Form.Item
+            name="seats"
+            label="Number of Seats"
+            rules={[
+              { required: true, message: "Please enter the number of seats" },
+            ]}
+          >
+            <InputNumber
+              placeholder="Enter number of seats"
+              min={2}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="color"
+            label="Color"
+            rules={[{ required: true, message: "Please enter the color" }]}
+          >
+            <Input placeholder="Enter color" />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={12}>
           <Form.Item name="features" label="Features">
             <Select
               mode="tags"
