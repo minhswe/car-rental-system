@@ -1,3 +1,4 @@
+// error-handler.middleware.ts
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "@/common/configs/error.config";
 import multer from "multer";
@@ -18,12 +19,12 @@ export const errorHandler = (
       },
     });
   }
+
   if (error instanceof multer.MulterError) {
     return res.status(400).json({
       success: false,
       error: {
-        status: "error",
-        statusCode: 400,
+        code: "MULTER_ERROR",
         message: error.message,
         details: error.field ?? undefined,
       },

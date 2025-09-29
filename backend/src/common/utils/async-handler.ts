@@ -1,24 +1,29 @@
+// asyncHandler.ts
 import { Request, Response, NextFunction, RequestHandler } from "express";
-import mongoose, { MongooseError } from "mongoose";
+import mongoose from "mongoose";
 import { throwError } from "@/common/configs/error.config";
 
 const asyncHandler =
   (
-    func: (req: Request, res: Response, next: NextFunction) => Promise<any>
+    fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
   ): RequestHandler =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req, res, next) => {
     try {
-      await func(req, res, next);
-    } catch (error: unknown) {
+      await fn(req, res, next);
+    } catch (error: any) {
+      // Handle MongoDB duplicate key error
       if (error instanceof mongoose.mongo.MongoServerError) {
-        if (error.keyValue) {
+        if (error.code === 11000 && error.keyValue) {
           const field = Object.keys(error.keyValue)[0];
-          return next(throwError(400, `${field} already exists`));
+          return next(
+            throwError(409, `${field} already exists`, error.keyValue)
+          );
         }
-        // fallback generic message
         return next(throwError(400, error.message || "Database error"));
       }
-      next(error);
+
+      // fallback for unknown errors
+      return next(error);
     }
   };
 

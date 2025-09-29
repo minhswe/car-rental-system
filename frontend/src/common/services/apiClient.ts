@@ -23,17 +23,20 @@ const handleError = (error: unknown): ApiError => {
   if (error instanceof AxiosError) {
     const response = error.response;
     if (response) {
+      const errorData = response.data?.error;
+
       return {
-        message: response.data?.message || "An error occurred",
+        message:
+          errorData?.message || response.data?.message || "An error occurred",
         status: response.status,
         data: response.data,
       };
     }
-    // Network error or no response
     return {
       message: error.message || "Network error",
     };
   }
+
   return {
     message: "An unknown error occurred",
   };
