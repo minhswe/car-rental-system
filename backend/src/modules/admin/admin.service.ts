@@ -1,13 +1,10 @@
 import { throwError } from "@/common/configs/error.config";
-import {
-  Vehicle,
-  VehicleReviewHistory,
-  IVehicleReviewHistory,
-} from "../vehicle/vechicle.model";
-import { ReviewStatus, VehicleStatus } from "@/common/constants/enums";
+import { Vehicle } from "../vehicle/vechicle.model";
+import { VehicleReviewHistory, IVehicleReviewHistory } from "./admin.model";
+import { ReviewAction, VehicleStatus } from "@/common/constants/enums";
 
 export const reviewVehicleService = async (data: IVehicleReviewHistory) => {
-  const { adminId, vehicleId, status, reason } = data;
+  const { adminId, vehicleId, action, reason } = data;
 
   const vehicle = await Vehicle.findById(vehicleId);
 
@@ -20,7 +17,7 @@ export const reviewVehicleService = async (data: IVehicleReviewHistory) => {
   }
 
   vehicle.vehicleStatus =
-    status === ReviewStatus.APPROVAL
+    action === ReviewAction.APPROVE
       ? VehicleStatus.AVAILABLE
       : VehicleStatus.REJECTED;
 
@@ -29,7 +26,7 @@ export const reviewVehicleService = async (data: IVehicleReviewHistory) => {
   const reviewHistory = await VehicleReviewHistory.create({
     adminId,
     vehicleId,
-    status,
+    action,
     reason,
     reviewedAt: new Date(),
   });

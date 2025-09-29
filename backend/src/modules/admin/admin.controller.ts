@@ -6,6 +6,7 @@ import * as adminService from "./admin.service";
 
 export const reviewVehicleController = asyncHandler(
   async (req: Request, res: Response) => {
+    console.log("reviewVehicleController called with body:", req.body);
     const reviewHistory = await adminService.reviewVehicleService(req.body);
 
     if (!reviewHistory) {

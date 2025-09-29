@@ -28,7 +28,7 @@ export interface IVehicle {
 export interface IVehicleReviewHistory {
   adminId: string;
   vehicleId: string;
-  status: ReviewStatus;
+  action: ReviewStatus;
   reason?: string;
   reviewedAt?: Date;
 }
@@ -67,17 +67,17 @@ const vehicleSchema = new Schema<IVehicle>({
   providerId: { type: String, required: true },
 });
 
-const vehicleReviewHistorySchema = new Schema<IVehicleReviewHistory>({
-  adminId: { type: String, required: true },
-  vehicleId: { type: String, required: true },
-  status: { type: String, enum: Object.values(ReviewStatus), required: true },
-  reason: { type: String, required: false },
-  reviewedAt: { type: Date, required: true, default: Date.now },
-});
+// const vehicleReviewHistorySchema = new Schema<IVehicleReviewHistory>({
+//   adminId: { type: String, required: true },
+//   vehicleId: { type: String, required: true },
+//   status: { type: String, enum: Object.values(ReviewStatus), required: true },
+//   reason: { type: String, required: false },
+//   reviewedAt: { type: Date, default: Date.now },
+// });
 
 export const Vehicle = model<IVehicle>("Vehicle", vehicleSchema);
 
-export const VehicleReviewHistory = model<IVehicleReviewHistory>(
-  "VehicleReviewHistory",
-  vehicleReviewHistorySchema
-);
+// export const VehicleReviewHistory = model<IVehicleReviewHistory>(
+//   "VehicleReviewHistory",
+//   vehicleReviewHistorySchema
+// );

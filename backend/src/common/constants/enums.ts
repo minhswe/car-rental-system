@@ -4,8 +4,8 @@ export enum UserRole {
   CUSTOMER = "Customer",
 }
 
-export enum ReviewStatus {
-  APPROVAL = "Approval",
+export enum ReviewAction {
+  APPROVE = "Approve",
   REJECT = "Reject",
 }
 
