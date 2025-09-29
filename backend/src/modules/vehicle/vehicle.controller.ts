@@ -1,33 +1,33 @@
 import { createResponse } from "@/common/configs/response.config";
 import asyncHandler from "@/common/utils/async-handler";
+import { throwError } from "@/common/configs/error.config";
 import * as vehicleService from "./vehicle.service";
 import { Request, Response } from "express";
 import MESSAGE from "./vehicle.message";
 
+//vehicle
 export const createVehicle = asyncHandler(
   async (req: Request, res: Response) => {
     console.log("Request Body:", req.body); // Debugging line
     console.log("Request Files:", req.files); // Debugging line
-    // body từ client
-    const vehicleData = req.body;
 
-    // nếu bạn dùng multer.array("files")
-    const files = (req.files as Express.Multer.File[]).map(
-      file => `/uploads/vehicles/${file.filename}`
+    const vehicleData = req.body;
+    const files = req.files as Express.Multer.File[]; // multer.array("files")
+
+    const vehicle = await vehicleService.createVehicleService(
+      vehicleData,
+      files
     );
 
-    // merge vào dữ liệu
-    const vehicle = await vehicleService.createVehicleService({
-      ...vehicleData,
-      files, // gán array string
-    });
     if (!vehicle) {
-      return createResponse(res, 400, MESSAGE.VEHICLE_CREATION_FAILED);
+      throw throwError(400, MESSAGE.VEHICLE_CREATION_FAILED);
     }
+
     return createResponse(res, 201, MESSAGE.VEHICLE_CREATED, vehicle);
   }
 );
 
+//provider
 export const getProviderVehicles = asyncHandler(
   async (req: Request, res: Response) => {
     const providerId = req.user?.id as any;
@@ -38,5 +38,17 @@ export const getProviderVehicles = asyncHandler(
       return createResponse(res, 404, MESSAGE.VEHICLE_NOT_FOUND);
     }
     return createResponse(res, 200, MESSAGE.VEHICLES_FETCHED, vehicles);
+  }
+);
+
+//admin
+export const getVehicleWaitingApprovalController = asyncHandler(
+  async (req, res) => {
+    const vehicles =
+      await vehicleService.getWaitingForApprovalVehiclesService();
+    if (vehicles.length <= 0) {
+      return createResponse(res, 404, MESSAGE.FETCH_VEHICLES_FAIL);
+    }
+    return createResponse(res, 200, MESSAGE.FETCH_VEHICLES_SUCCESS, vehicles);
   }
 );

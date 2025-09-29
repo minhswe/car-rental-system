@@ -5,6 +5,7 @@ import {
   VehicleStatus,
   VehicleTransmission,
   VehicleInsurance,
+  ReviewStatus,
 } from "common/constants/enums";
 
 export interface IVehicle {
@@ -18,8 +19,18 @@ export interface IVehicle {
   pricePerDay?: number;
   compulsoryInsurance: VehicleInsurance;
   vehicleStatus: VehicleStatus;
+  seats?: number;
+  color?: string;
   bookingCount?: number;
   providerId: string;
+}
+
+export interface IVehicleReviewHistory {
+  adminId: string;
+  vehicleId: string;
+  status: ReviewStatus;
+  reason?: string;
+  reviewedAt?: Date;
 }
 
 const vehicleSchema = new Schema<IVehicle>({
@@ -50,8 +61,23 @@ const vehicleSchema = new Schema<IVehicle>({
     required: true,
     default: VehicleStatus.WAITING_FOR_APPROVAL,
   },
+  seats: { type: Number, required: false },
+  color: { type: String, required: false },
   bookingCount: { type: Number, required: false, default: 0 },
   providerId: { type: String, required: true },
 });
 
+const vehicleReviewHistorySchema = new Schema<IVehicleReviewHistory>({
+  adminId: { type: String, required: true },
+  vehicleId: { type: String, required: true },
+  status: { type: String, enum: Object.values(ReviewStatus), required: true },
+  reason: { type: String, required: false },
+  reviewedAt: { type: Date, required: true, default: Date.now },
+});
+
 export const Vehicle = model<IVehicle>("Vehicle", vehicleSchema);
+
+export const VehicleReviewHistory = model<IVehicleReviewHistory>(
+  "VehicleReviewHistory",
+  vehicleReviewHistorySchema
+);

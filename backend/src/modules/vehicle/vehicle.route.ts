@@ -6,11 +6,13 @@ import {
 } from "common/middlewares/auth.middleware";
 import { UserRole } from "common/constants/enums";
 import { uploadVehicleImages } from "@/common/middlewares/upload.middleware";
-
+import validateBodyRequest from "@/common/middlewares/validate-body.middleware";
+import { vehicleCreateSchema } from "./vehicle.schema";
 export const vehicleRouter = Router();
 
 vehicleRouter.post(
   "/",
+  // validateBodyRequest(vehicleCreateSchema),
   authMiddleware,
   roleRequireMiddleware(UserRole.PROVIDER),
   uploadVehicleImages,
@@ -31,4 +33,13 @@ providerVehicleRouter.get(
   authMiddleware,
   roleRequireMiddleware(UserRole.PROVIDER),
   vehicleController.getProviderVehicles
+);
+
+export const adminVehicleRouter = Router({ mergeParams: true });
+
+adminVehicleRouter.get(
+  "/vehicles/waiting-for-approval",
+  authMiddleware,
+  roleRequireMiddleware(UserRole.ADMIN),
+  vehicleController.getVehicleWaitingApprovalController
 );
