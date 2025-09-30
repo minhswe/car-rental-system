@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getVehicles, createVehicle } from "@/common/services/provider.service";
 import VehicleTable from "./VehicleTable";
 import CarForm from "./VehicleForm";
-import { Vehicle } from "@/common/types/vehicle.type";
+import { Vehicle, ProviderVehicle } from "@/common/types/vehicle.type";
 import Notify from "@/components/common/Notification";
 import { useSelector } from "react-redux";
 import { RootState } from "@/common/stores/store";
@@ -29,7 +29,7 @@ const VehicleManagement: React.FC = () => {
     data: response = { message: "", data: [] },
     isLoading,
     error,
-  } = useQuery<{ message: string; data: Vehicle[] }, Error>({
+  } = useQuery<{ message: string; data: ProviderVehicle[] }, Error>({
     queryKey: ["vehicles"],
     queryFn: getVehicles,
   });

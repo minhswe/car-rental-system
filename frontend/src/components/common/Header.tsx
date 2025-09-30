@@ -8,7 +8,10 @@ import {
   UserOutlined,
   LogoutOutlined,
   SettingOutlined,
+  TableOutlined,
 } from "@ant-design/icons";
+import { RoleEnum } from "@/common/types";
+
 const Header = () => {
   const location = useLocation();
 
@@ -54,8 +57,8 @@ const Header = () => {
     // },
   ];
 
-  const userMenu = {
-    items: [
+  const userMenu = (role: RoleEnum) => {
+    const items = [
       {
         key: "profile",
         label: "Profile",
@@ -72,12 +75,33 @@ const Header = () => {
         label: "Sign Out",
         icon: <LogoutOutlined />,
       },
-    ],
+    ];
+    if (role === RoleEnum.ADMIN) {
+      items.splice(1, 0, {
+        key: "admin",
+        label: "Admin Dashboard",
+        icon: <TableOutlined />,
+      });
+    } else if (role === RoleEnum.PROVIDER) {
+      items.splice(1, 0, {
+        key: "provider",
+        label: "Provider Dashboard",
+        icon: <TableOutlined />,
+      });
+    }
+
+    return items;
   };
 
   const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
     if (key === "signout") {
       dispatch(signout());
+    }
+
+    if (key === "admin") {
+      window.location.href = "/admin";
+    } else if (key === "provider") {
+      window.location.href = "/provider";
     }
   };
 
@@ -126,7 +150,7 @@ const Header = () => {
           <Space>
             <span>Welcome, {user.username}</span>
             <Dropdown
-              menu={{ items: userMenu.items, onClick: handleMenuClick }}
+              menu={{ items: userMenu(user.role), onClick: handleMenuClick }}
               placement="bottomRight"
             >
               <Space style={{ cursor: "pointer" }}>

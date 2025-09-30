@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-import { Vehicle } from "../types/vehicle.type";
+import { Vehicle, ProviderVehicle } from "../types/vehicle.type";
 
 interface ApiResponse {
   message: string;
@@ -9,7 +9,7 @@ interface ApiResponse {
 
 interface VehicleResponse {
   message: string;
-  data: Vehicle[];
+  data: ProviderVehicle[];
 }
 
 export const getVehicles = async (): Promise<VehicleResponse> => {

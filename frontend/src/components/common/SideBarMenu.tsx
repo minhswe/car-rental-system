@@ -1,10 +1,11 @@
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, HomeOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/common/stores/store";
+import { signout } from "@/common/stores/authSlice";
 
 const { Sider } = Layout;
 
@@ -15,14 +16,15 @@ interface SiderMenuProps {
   signoutPath?: string;
 }
 
-const SiderMenu = ({
-  menuItems,
-  selectedKeys,
-  logoText,
-  signoutPath = "/signout",
-}: SiderMenuProps) => {
+const SiderMenu = ({ menuItems, selectedKeys, logoText }: SiderMenuProps) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleSignOut = () => {
+    dispatch(signout());
+    navigate("/sign-in");
+  };
 
   return (
     <Sider
@@ -70,8 +72,8 @@ const SiderMenu = ({
           padding: "8px 0",
         }}
       >
-        <Link
-          to={signoutPath}
+        <Button
+          onClick={handleSignOut}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -92,8 +94,32 @@ const SiderMenu = ({
           <LogoutOutlined
             style={{ fontSize: 18, marginRight: collapsed ? 0 : 8 }}
           />
-          {!collapsed && "Đăng xuất"}
-        </Link>
+          {!collapsed && "Sign Out"}
+        </Button>
+        <Button
+          onClick={() => navigate("/")}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            fontSize: 16,
+            fontWeight: 600,
+            color: "var(--primary-color)",
+            padding: "8px 16px",
+            borderRadius: 4,
+            transition: "background-color 0.3s",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "#e6f7ff")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "transparent")
+          }
+        >
+          <HomeOutlined
+            style={{ fontSize: 18, marginRight: collapsed ? 0 : 8 }}
+          />
+          {!collapsed && "Back to home page"}
+        </Button>
       </div>
     </Sider>
   );
