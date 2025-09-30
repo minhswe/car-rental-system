@@ -5,7 +5,6 @@ import {
   VehicleStatus,
   VehicleTransmission,
   VehicleInsurance,
-  ReviewStatus,
 } from "common/constants/enums";
 
 export interface IVehicle {
@@ -23,14 +22,6 @@ export interface IVehicle {
   color?: string;
   bookingCount?: number;
   providerId: string;
-}
-
-export interface IVehicleReviewHistory {
-  adminId: string;
-  vehicleId: string;
-  action: ReviewStatus;
-  reason?: string;
-  reviewedAt?: Date;
 }
 
 const vehicleSchema = new Schema<IVehicle>({

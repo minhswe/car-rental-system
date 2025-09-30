@@ -38,10 +38,43 @@ export const createVehicleService = async (
 
 //provider
 export const getVehiclesByProvider = async (providerId: string) => {
-  console.log("Provider ID:", providerId); // Debugging line
-  const cars = await Vehicle.find({ providerId: providerId });
-  console.log("Cars by provider:", cars);
-  return cars;
+  // console.log("Provider ID:", providerId); // Debugging line
+  // const cars = await Vehicle.find({ providerId: providerId });
+  // console.log("Cars by provider:", cars);
+  // return cars;
+
+  const vehicles = await Vehicle.aggregate([
+    { $match: { providerId: providerId } },
+    {
+      $lookup: {
+        from: "vehiclereviewhistories",
+        localField: "_id",
+        foreignField: "vehicleId",
+        as: "reviewHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "adminId",
+              foreignField: "id",
+              as: "admin",
+              pipeline: [{ $project: { username: 1 } }],
+            },
+          },
+          { $unwind: "$admin" },
+          {
+            $addFields: {
+              username: "$admin.username",
+            },
+          },
+          { $project: { admin: 0 } }, // loại bỏ thông tin admin thừa
+          { $sort: { reviewedAt: -1 } }, // sort từng lịch sử review
+        ],
+      },
+    },
+  ]);
+
+  return vehicles;
 };
 
 //admin
