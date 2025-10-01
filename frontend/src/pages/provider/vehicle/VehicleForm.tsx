@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Form,
   Input,
@@ -26,10 +26,20 @@ import { Vehicle } from "@/common/types/vehicle.type";
 
 interface VehicleFormProps {
   form: any; // Ant Design Form instance
-  onSubmit: (values: Omit<Vehicle, "id"> & { images: string[] }) => void;
+  onSubmit: (values: Omit<Vehicle, "id"> & { files: string[] }) => void;
   onCancel: () => void;
   isPending: boolean;
+  isEditable: boolean; // New prop to toggle between view/edit modes
+  initialValues?: Omit<Vehicle, "_id"> & { files: string[] }; // Initial values for edit/view mode
 }
+
+// const mapStringToUploadFile = (urls: string[]): UploadFile[] =>
+//   urls.map((url, index) => ({
+//     uid: String(index),
+//     name: `image_${index}`,
+//     status: "done",
+//     url, // hiển thị preview
+//   }));
 
 const getBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -44,12 +54,38 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
   form,
   onSubmit,
   onCancel,
+
   isPending,
+  isEditable,
+  initialValues,
 }) => {
   const [fileList, setFileList] = React.useState<UploadFile[]>([]);
+
   const [previewOpen, setPreviewOpen] = React.useState(false);
+
   const [previewImage, setPreviewImage] = React.useState("");
 
+  // Initialize form with initialValues if provided (for edit/view mode)
+  useEffect(() => {
+    if (!initialValues) {
+      setFileList([]);
+      form.resetFields();
+      return;
+    }
+    if (initialValues) {
+      form.setFieldsValue(initialValues);
+
+      const initialFiles: UploadFile[] = (initialValues.files || []).map(
+        (files: string, index: number) => ({
+          uid: `-${index}`,
+          name: files.split("/").pop() || `image-${index}.png`,
+          status: "done" as const,
+          url: `${import.meta.env.VITE_API_BASE_URL}${files}`,
+        })
+      );
+      setFileList(initialFiles);
+    }
+  }, [initialValues, form]);
   // Convert & preview
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview && file.originFileObj) {
@@ -112,7 +148,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         }
 
         return Promise.resolve();
-      }, // Added missing comma here
+      },
     },
   ];
 
@@ -130,8 +166,8 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
   );
 
   const handleFinish = (values: any) => {
-    const images = fileList.map((file) => file.url as string);
-    onSubmit({ ...values, images });
+    const files = fileList.map((file) => file.url as string);
+    onSubmit({ ...values, files });
   };
 
   return (
@@ -342,15 +378,16 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
           </Form.Item>
         </Col>
       </Row>
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={isPending}>
-          Create
-        </Button>
-        <Button onClick={onCancel} className="ml-2">
-          Cancel
-        </Button>
-      </Form.Item>
+      {isEditable ? (
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={isPending}>
+            {initialValues ? "Update" : "Create"}
+          </Button>
+          <Button onClick={onCancel} className="ml-2">
+            Cancel
+          </Button>
+        </Form.Item>
+      ) : null}
     </Form>
   );
 };

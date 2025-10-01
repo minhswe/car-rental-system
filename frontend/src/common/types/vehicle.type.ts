@@ -39,6 +39,9 @@ export interface ProviderVehicle extends Vehicle {
   reviewHistory?: ReviewHistory[];
 }
 
+export interface UpdateVehicleRequest extends Partial<Vehicle> {
+  existingFiles?: string[];
+}
 export interface ApprovalVehicleForm extends Vehicle {
   providerUsername?: string;
 }

@@ -24,6 +24,10 @@ export interface IVehicle {
   providerId: string;
 }
 
+export interface UpdateVehicleRequest extends Partial<IVehicle> {
+  existingFiles?: string[]; // Array of existing file paths to retain
+}
+
 const vehicleSchema = new Schema<IVehicle>({
   make: { type: String, enum: Object.values(VehicleMake), required: true },
   model: { type: String, required: true },

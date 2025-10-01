@@ -1,5 +1,5 @@
 import { start } from "repl";
-import { IVehicle, Vehicle } from "./vechicle.model";
+import { IVehicle, Vehicle, UpdateVehicleRequest } from "./vechicle.model";
 import { startSession } from "mongoose";
 import { throwError } from "@/common/configs/error.config";
 import { VehicleStatus } from "@/common/constants/enums";
@@ -75,6 +75,45 @@ export const getVehiclesByProvider = async (providerId: string) => {
   ]);
 
   return vehicles;
+};
+
+export const updateVehicleService = async (
+  id: string,
+  updateData: UpdateVehicleRequest,
+  files?: Express.Multer.File[]
+): Promise<IVehicle | null> => {
+  const existing = await Vehicle.findById(id);
+  if (!existing) {
+    throw throwError(404, "Vehicle not found");
+  }
+  const existingFilesFromBody = Array.isArray(updateData.existingFiles)
+    ? updateData.existingFiles
+    : updateData.existingFiles
+      ? [updateData.existingFiles]
+      : [];
+
+  const uploadedFiles =
+    files && files.length > 0
+      ? files.map(file => `/uploads/vehicles/${file.filename}`)
+      : [];
+
+  const filePaths = [...existingFilesFromBody, ...uploadedFiles];
+
+  // const filePaths =
+  //   files && files.length > 0
+  //     ? files.map(file => `/uploads/vehicles/${file.filename}`)
+  //     : existing.files; // giữ nguyên ảnh cũ nếu không upload mới
+
+  const updated = await Vehicle.findByIdAndUpdate(
+    id,
+    {
+      ...updateData,
+      files: filePaths,
+    },
+    { new: true }
+  );
+
+  return updated;
 };
 
 //admin

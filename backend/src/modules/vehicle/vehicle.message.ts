@@ -5,6 +5,8 @@ const MESSAGE = {
   VEHICLES_FETCHED: "Vehicles fetched successfully",
   FETCH_VEHICLES_SUCCESS: "Fetch vehicles waiting for approval successful",
   FETCH_VEHICLES_FAIL: "No vehicles waiting for approval",
+  VEHICLE_UPDATED: "Vehicle updated successfully",
+  VEHICLE_UPDATE_FAILED: "Failed to update vehicle",
 };
 
 export default MESSAGE;

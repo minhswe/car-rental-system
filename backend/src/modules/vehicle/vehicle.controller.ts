@@ -27,6 +27,26 @@ export const createVehicle = asyncHandler(
   }
 );
 
+export const updateVehicle = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const updateData = req.body;
+    const files = req.files as Express.Multer.File[];
+
+    const updateVehicle = await vehicleService.updateVehicleService(
+      id,
+      updateData,
+      files
+    );
+
+    if (!updateVehicle) {
+      throw throwError(400, MESSAGE.VEHICLE_UPDATE_FAILED);
+    }
+
+    return createResponse(res, 200, MESSAGE.VEHICLE_UPDATED, updateVehicle);
+  }
+);
+
 //provider
 export const getProviderVehicles = asyncHandler(
   async (req: Request, res: Response) => {

@@ -9,6 +9,7 @@ import {
   Space,
   Modal,
   Typography,
+  // Form,
 } from "antd";
 import { Vehicle, ProviderVehicle } from "@/common/types/vehicle.type";
 import { ReviewAction, VehicleStatus } from "@/common/types";
@@ -20,30 +21,49 @@ import {
 } from "@ant-design/icons";
 import styles from "./provider.module.css";
 import { formatVietnamLicensePlate } from "@/common/utils/format";
-import TextArea from "antd/es/input/TextArea";
+// import VehicleForm from "./VehicleForm";
+
 interface VehicleTableProps {
   vehicles: ProviderVehicle[];
   isLoading: boolean;
   error: Error | null;
-  // onEdit: (vehicle: Vehicle) => void;
-  // onDelete: (vehicle: Vehicle) => void;
+  onView?: (vehicle: ProviderVehicle) => void;
+  onEdit?: (vehicle: ProviderVehicle) => void;
+  onDelete?: (vehicle: ProviderVehicle) => void;
 }
 
 const VehicleTable: React.FC<VehicleTableProps> = ({
   vehicles,
   isLoading,
   error,
-  // onEdit,
-  // onDelete,
+  onView,
+  onEdit,
+  onDelete,
 }) => {
-  const [isOpenReview, setIsOpenReview] = React.useState(false);
+  const [isOpenReview, setIsOpenReview] = useState(false);
 
-  const [isOpenView, setIsOpenView] = useState(false);
-  const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  // const [isOpenView, setIsOpenView] = useState(false);
+
+  // const [isOpenEdit, setIsOpenEdit] = useState(false);
+
+  // const [isOpenDelete, setIsOpenDelete] = useState(false);
 
   const [selectedVehicle, setSelectedVehicle] =
     useState<ProviderVehicle | null>(null);
+
+  // const [form] = Form.useForm();
+
+  // const handleView = (vehicle: Vehicle) => {
+  //   setSelectedVehicle(vehicle as ProviderVehicle);
+  //   setIsOpenView(true);
+  // };
+
+  // const handleEdit = (vehicle: Vehicle) => {
+  //   setSelectedVehicle(vehicle as ProviderVehicle);
+  //   form.setFieldsValue(vehicle);
+  //   setIsOpenEdit(true);
+  // };
+
   const columns = [
     { title: "Make", dataIndex: "make", key: "make" },
     { title: "Model", dataIndex: "model", key: "model" },
@@ -69,7 +89,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
       title: "Status",
       dataIndex: "vehicleStatus",
       key: "vehicleStatus",
-      render: (_: string, record: Vehicle) => {
+      render: (_: unknown, record: Vehicle) => {
         switch (record.vehicleStatus) {
           case VehicleStatus.AVAILABLE:
             return <Tag color="green">Available</Tag>;
@@ -105,13 +125,24 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
       render: (_: unknown, record: Vehicle) => (
         <Space size="middle">
           <Tooltip title="View Vehicle">
-            <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+            <Button
+              onClick={() => onView?.(record)}
+              type="primary"
+              shape="circle"
+              icon={<EyeOutlined />}
+            />
           </Tooltip>
           <Tooltip title="Edit Vehicle">
-            <Button type="default" shape="circle" icon={<EditOutlined />} />
+            <Button
+              onClick={() => onEdit?.(record)}
+              type="default"
+              shape="circle"
+              icon={<EditOutlined />}
+            />
           </Tooltip>
           <Tooltip title="Delete Vehicle">
             <Button
+              onClick={() => onDelete?.(record)}
               type="primary"
               danger
               shape="circle"
@@ -150,8 +181,10 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
             selectedVehicle.reviewHistory.map((review, index) => (
               <div key={index} style={{ marginBottom: "1em" }}>
                 <p>
-                  <strong>#{index + 1} Reviewed by</strong> {review.username}{" "}
-                  <strong>on</strong>{" "}
+                  <span style={{ textDecoration: "underline" }}>
+                    <strong>#{index + 1} Review </strong>
+                  </span>{" "}
+                  <strong>by</strong> {review.username} <strong>on</strong>{" "}
                   {new Date(review.reviewedAt).toLocaleDateString()}{" "}
                   <strong>at</strong>{" "}
                   {new Date(review.reviewedAt).toLocaleTimeString()}{" "}
@@ -179,6 +212,84 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
           )}
         </Typography.Paragraph>
       </Modal>
+
+      {/* <Modal
+        title="View Vehicle"
+        open={isOpenView}
+        footer={null}
+        onCancel={() => setIsOpenView(false)}
+      >
+        <VehicleForm
+          form={form}
+          onSubmit={() => {}}
+          onCancel={() => setIsOpenView(false)}
+          isPending={false}
+          isEditable={false}
+          initialValues={
+            selectedVehicle
+              ? {
+                  ...selectedVehicle,
+                  files: selectedVehicle.files
+                    ? selectedVehicle.files.map((file: any) =>
+                        typeof file === "string"
+                          ? file
+                          : file.url || file.name || ""
+                      )
+                    : [],
+                }
+              : undefined
+          }
+        />
+      </Modal> */}
+      {/* <Modal
+        title="Edit Vehicle"
+        open={isOpenEdit}
+        footer={null}
+        onCancel={() => {
+          setIsOpenEdit(false);
+          form.resetFields();
+          setSelectedVehicle(null);
+        }}
+      >
+        <VehicleForm
+          form={form}
+          onSubmit={(values) => {
+            if (selectedVehicle) {
+              onEdit?.({ ...selectedVehicle, ...values });
+            }
+          }}
+          onCancel={() => {
+            setIsOpenEdit(false);
+            form.resetFields();
+            setSelectedVehicle(null);
+          }}
+          isPending={isLoading}
+          isEditable={true}
+          initialValues={
+            selectedVehicle
+              ? {
+                  make: selectedVehicle.make,
+                  model: selectedVehicle.model,
+                  licensePlate: selectedVehicle.licensePlate,
+                  files: selectedVehicle.files.map((file: any) =>
+                    typeof file === "string"
+                      ? file
+                      : file.url || file.name || ""
+                  ),
+                  fuelType: selectedVehicle.fuelType,
+                  transmission: selectedVehicle.transmission,
+                  features: selectedVehicle.features || [],
+                  pricePerDay: selectedVehicle.pricePerDay,
+                  compulsoryInsurance: selectedVehicle.compulsoryInsurance,
+                  vehicleStatus: selectedVehicle.vehicleStatus,
+                  seats: selectedVehicle.seats,
+                  color: selectedVehicle.color,
+                  providerId: selectedVehicle.providerId,
+                }
+              : undefined
+          }
+        />
+      </Modal> */}
     </>
   );
 };

@@ -1,6 +1,10 @@
 import apiClient from "./apiClient";
 
-import { Vehicle, ProviderVehicle } from "../types/vehicle.type";
+import {
+  Vehicle,
+  ProviderVehicle,
+  UpdateVehicleRequest,
+} from "../types/vehicle.type";
 
 interface ApiResponse {
   message: string;
@@ -22,9 +26,21 @@ export const getVehicles = async (): Promise<VehicleResponse> => {
 };
 
 export const createVehicle = async (formData: FormData): Promise<Vehicle> => {
-  console.log("Creating vehicle with data:", formData);
-
   const response = await apiClient.post<Vehicle>("/vehicles", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
+export const updateVehicle = async (
+  id: string,
+  formData: FormData
+): Promise<Vehicle> => {
+  console.log("Updating vehicle with data:", formData);
+  const response = await apiClient.put<Vehicle>(`/vehicles/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

@@ -19,12 +19,20 @@ vehicleRouter.post(
   vehicleController.createVehicle
 );
 
-vehicleRouter.post(
-  "/vehicle/upload",
-  uploadVehicleImages,
+vehicleRouter.put(
+  "/:id",
   authMiddleware,
-  roleRequireMiddleware(UserRole.PROVIDER)
+  roleRequireMiddleware(UserRole.PROVIDER),
+  uploadVehicleImages,
+  vehicleController.updateVehicle
 );
+
+// vehicleRouter.post(
+//   "/vehicle/upload",
+//   uploadVehicleImages,
+//   authMiddleware,
+//   roleRequireMiddleware(UserRole.PROVIDER)
+// );
 
 export const providerVehicleRouter = Router({ mergeParams: true });
 
