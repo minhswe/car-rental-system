@@ -42,8 +42,8 @@ const Header = () => {
     {
       key: "/about",
       label: (
-        <Link to="/carlisting" onClick={() => setMenuOpen(false)}>
-          Car Listing
+        <Link to="/vehicles" onClick={() => setMenuOpen(false)}>
+          Vehicle Listing
         </Link>
       ),
     },

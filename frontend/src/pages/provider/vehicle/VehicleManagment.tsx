@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, UploadFile } from "antd";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  getVehicles,
-  createVehicle,
-  updateVehicle,
-} from "@/common/services/provider.service";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getVehicles } from "@/common/services/provider.service";
 import VehicleTable from "./VehicleTable";
 import VehicleForm from "./VehicleForm";
 import { Vehicle, ProviderVehicle } from "@/common/types/vehicle.type";
 import Notify from "@/components/common/Notification";
 import { useSelector } from "react-redux";
 import { RootState } from "@/common/stores/store";
+import {
+  useCreateVehicleMutation,
+  useUpdateVehicleMutation,
+} from "./useVehicleMutations";
 
 const VehicleManagement: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -32,6 +32,11 @@ const VehicleManagement: React.FC = () => {
 
   const queryClient = useQueryClient();
 
+  const { mutate: createVehicle, isPending: isCreating } =
+    useCreateVehicleMutation();
+  const { mutate: updateVehicle, isPending: isUpdating } =
+    useUpdateVehicleMutation();
+
   const {
     data: response = { message: "", data: [] },
     isLoading,
@@ -39,29 +44,6 @@ const VehicleManagement: React.FC = () => {
   } = useQuery<{ message: string; data: ProviderVehicle[] }, Error>({
     queryKey: ["vehicles"],
     queryFn: getVehicles,
-  });
-
-  const { mutateAsync: createVehicleAsync, isPending } = useMutation({
-    mutationFn: createVehicle,
-    onSuccess() {
-      console.log("onSuccess called");
-      setNotify({
-        open: true,
-        type: "success",
-        message: "Vehicle created successfully",
-      });
-      setIsModalVisible(false);
-      form.resetFields();
-      queryClient.invalidateQueries({ queryKey: ["vehicles"] });
-    },
-    onError(error: any) {
-      setNotify({
-        open: true,
-        type: "error",
-        message: "Error creating vehicle",
-        description: error.message,
-      });
-    },
   });
 
   const handleView = (vehicle: ProviderVehicle) => {
@@ -115,37 +97,6 @@ const VehicleManagement: React.FC = () => {
         }
       });
 
-      // Convert base64 images -> Blob trước khi append
-      // if (Array.isArray(values.files)) {
-      //   values.files.forEach((item: any, index) => {
-      //     if (typeof item === "string") {
-      //       if (item.startsWith("data:")) {
-      //         const arr = item.split(",");
-      //         const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
-      //         const bstr = atob(arr[1]);
-      //       } else {
-      //         values.files.push(item);
-      //         return;
-      //       }
-      //       // base64 string
-      //       const arr = item.split(",");
-      //       const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
-      //       const bstr = atob(arr[1]);
-      //       let n = bstr.length;
-      //       const u8arr = new Uint8Array(n);
-      //       while (n--) {
-      //         u8arr[n] = bstr.charCodeAt(n);
-      //       }
-      //       const file = new File([u8arr], `image_${index}.png`, {
-      //         type: mime,
-      //       });
-      //       formData.append("files", file);
-      //     } else if (item?.originFileObj) {
-      //       // UploadFile case
-      //       formData.append("files", item.originFileObj as File);
-      //     }
-      //   });
-      // }
       if (Array.isArray(values.files)) {
         values.files.forEach((item: any, index) => {
           if (typeof item === "string") {
@@ -184,11 +135,36 @@ const VehicleManagement: React.FC = () => {
       });
 
       if (mode === "create") {
-        await createVehicleAsync(formData);
+        // await createVehicleAsync(formData);
+        createVehicle(formData, {
+          onSuccess: () => {
+            setNotify({
+              open: true,
+              type: "success",
+              message: "Vehicle created successfully",
+            });
+            setIsModalVisible(false);
+            form.resetFields();
+          },
+        });
       }
 
       if (mode === "edit" && selectedVehicle) {
-        await updateVehicle(String(selectedVehicle._id), formData);
+        // await updateVehicle(String(selectedVehicle._id), formData);
+        updateVehicle(
+          { id: String(selectedVehicle._id), formData },
+          {
+            onSuccess: () => {
+              setNotify({
+                open: true,
+                type: "success",
+                message: "Vehicle updated successfully",
+              });
+              setIsModalVisible(false);
+              form.resetFields();
+            },
+          }
+        );
       }
     } catch (error) {
       setNotify({
@@ -237,21 +213,7 @@ const VehicleManagement: React.FC = () => {
           setIsModalVisible(true);
         }}
       />
-      {/* <Modal
-        title="Add New Vehicle"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-        width={800}
-      >
-        <VehicleForm
-          form={form}
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-          isPending={isPending}
-          isEditable={true}
-        />
-      </Modal> */}
+
       <Modal
         title={
           mode === "create"
@@ -269,7 +231,8 @@ const VehicleManagement: React.FC = () => {
           form={form}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
-          isPending={isPending}
+          isPending={isCreating || isUpdating}
+          mode={mode}
           isEditable={mode !== "view"} // chỉ view thì disable
           initialValues={
             selectedVehicle

@@ -18,6 +18,16 @@ export enum BookingStatus {
   INPROCESS = "in-process",
 }
 
+export enum VehicleStatus {
+  AVAILABLE = "Available",
+  IN_MAINTENANCE = "In Maintenance",
+  BOOKED = "Booked",
+  WAITING_FOR_APPROVAL = "Waiting for Approval",
+  REJECTED = "Rejected",
+  INACTIVE = "Inactive",
+  BLOCKED = "Blocked",
+}
+
 export enum VehicleMake {
   //Hãng xe Nhật Bản
   TOYOTA = "Toyota",
@@ -102,16 +112,6 @@ export enum VehicleTransmission {
   MANUAL = "Manual",
   AUTOMATIC = "Automatic",
   CVT = "CVT",
-}
-
-export enum VehicleStatus {
-  AVAILABLE = "Available",
-  IN_MAINTENANCE = "In Maintenance",
-  BOOKED = "Booked",
-  WAITING_FOR_APPROVAL = "Waiting for Approval",
-  REJECTED = "Rejected",
-  INACTIVE = "Inactive",
-  BLOCKED = "Blocked",
 }
 
 export enum MessageSenderType {

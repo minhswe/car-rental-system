@@ -95,6 +95,8 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
             return <Tag color="green">Available</Tag>;
           case VehicleStatus.UNAVAILABLE:
             return <Tag color="red">Unavailable</Tag>;
+          case VehicleStatus.IN_MAINTENANCE:
+            return <Tag color="orange">In Maintenance</Tag>;
           case VehicleStatus.REJECTED:
             return (
               <div>

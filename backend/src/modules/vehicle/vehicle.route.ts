@@ -27,6 +27,11 @@ vehicleRouter.put(
   vehicleController.updateVehicle
 );
 
+vehicleRouter.get(
+  "/available",
+  vehicleController.getAvailableVehicleController
+);
+
 // vehicleRouter.post(
 //   "/vehicle/upload",
 //   uploadVehicleImages,

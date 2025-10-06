@@ -30,16 +30,9 @@ interface VehicleFormProps {
   onCancel: () => void;
   isPending: boolean;
   isEditable: boolean; // New prop to toggle between view/edit modes
+  mode?: "create" | "edit" | "view"; // Mode of the form
   initialValues?: Omit<Vehicle, "_id"> & { files: string[] }; // Initial values for edit/view mode
 }
-
-// const mapStringToUploadFile = (urls: string[]): UploadFile[] =>
-//   urls.map((url, index) => ({
-//     uid: String(index),
-//     name: `image_${index}`,
-//     status: "done",
-//     url, // hiển thị preview
-//   }));
 
 const getBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -54,7 +47,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
   form,
   onSubmit,
   onCancel,
-
+  mode,
   isPending,
   isEditable,
   initialValues,
@@ -255,11 +248,28 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
           >
             <Select
               placeholder="Select a status"
-              options={Object.values(VehicleStatus).map((s) => ({
-                value: s,
-                label: s,
-                disabled: s !== VehicleStatus.WAITING_FOR_APPROVAL,
-              }))}
+              options={Object.values(VehicleStatus).map((s) => {
+                if (mode === "create") {
+                  return {
+                    value: s,
+                    label: s,
+                    disabled: s !== VehicleStatus.WAITING_FOR_APPROVAL,
+                  };
+                } else if (mode === "edit") {
+                  return {
+                    value: s,
+                    label: s,
+                    disabled:
+                      s === VehicleStatus.REJECTED ||
+                      s === VehicleStatus.WAITING_FOR_APPROVAL ||
+                      s === VehicleStatus.BOOKED,
+                  };
+                }
+                return {
+                  value: s,
+                  label: s,
+                };
+              })}
             />
           </Form.Item>
         </Col>

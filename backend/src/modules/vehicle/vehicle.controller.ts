@@ -4,6 +4,8 @@ import { throwError } from "@/common/configs/error.config";
 import * as vehicleService from "./vehicle.service";
 import { Request, Response } from "express";
 import MESSAGE from "./vehicle.message";
+import { getAvailableVehicleRequest } from "./vehicle.type";
+import { VehicleMake } from "@/common/constants/enums";
 
 //vehicle
 export const createVehicle = asyncHandler(
@@ -44,6 +46,30 @@ export const updateVehicle = asyncHandler(
     }
 
     return createResponse(res, 200, MESSAGE.VEHICLE_UPDATED, updateVehicle);
+  }
+);
+
+export const getAvailableVehicleController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const makeValue = req.query.make as string | undefined;
+    const filter: getAvailableVehicleRequest = {
+      make:
+        makeValue &&
+        Object.values(VehicleMake).includes(makeValue as VehicleMake)
+          ? (makeValue as VehicleMake)
+          : undefined,
+      seats: req.query.seats ? Number(req.query.seats) : undefined,
+      startDate: req.query.startDate
+        ? (req.query.startDate as string)
+        : undefined,
+      endDate: req.query.endDate ? (req.query.endDate as string) : undefined,
+    };
+
+    const vehicles = await vehicleService.getAvailableVehicleService(filter);
+    if (!vehicles || vehicles.length === 0) {
+      return createResponse(res, 404, MESSAGE.VEHICLE_NOT_FOUND);
+    }
+    return createResponse(res, 200, MESSAGE.VEHICLES_FETCHED, vehicles);
   }
 );
 

@@ -6,27 +6,7 @@ import {
   VehicleTransmission,
   VehicleInsurance,
 } from "common/constants/enums";
-
-export interface IVehicle {
-  make: VehicleMake;
-  model: string;
-  licensePlate: string;
-  files: Array<string>;
-  fuelType: VehicleFuelType;
-  transmission: VehicleTransmission;
-  features?: Array<string>;
-  pricePerDay?: number;
-  compulsoryInsurance: VehicleInsurance;
-  vehicleStatus: VehicleStatus;
-  seats?: number;
-  color?: string;
-  bookingCount?: number;
-  providerId: string;
-}
-
-export interface UpdateVehicleRequest extends Partial<IVehicle> {
-  existingFiles?: string[]; // Array of existing file paths to retain
-}
+import { IVehicle } from "./vehicle.type";
 
 const vehicleSchema = new Schema<IVehicle>({
   make: { type: String, enum: Object.values(VehicleMake), required: true },

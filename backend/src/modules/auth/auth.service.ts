@@ -25,8 +25,9 @@ export const signInAuthService = async (
   const { username, password } = userData;
 
   const existingUser = await User.findOne({ username });
+
   if (!existingUser) {
-    return throwError(400, MESSAGE.INVALID_CREDENTIALS);
+    throw throwError(400, MESSAGE.INVALID_CREDENTIALS);
   }
 
   const isPasswordValid = await comparePassword(
@@ -35,7 +36,7 @@ export const signInAuthService = async (
   );
 
   if (!isPasswordValid) {
-    return throwError(400, MESSAGE.INVALID_CREDENTIALS);
+    throw throwError(400, MESSAGE.INVALID_CREDENTIALS);
   }
 
   const accessToken = generateToken({

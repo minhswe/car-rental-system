@@ -1,14 +1,6 @@
 import { Schema, model } from "mongoose";
 import { BookingStatus } from "@/common/constants/enums";
-interface IBooking {
-  id: number;
-  bookingStartAt: Date;
-  bookingEndAt: Date;
-  totalPrice: number;
-  vehicleId: number;
-  customerId: string;
-  status: BookingStatus;
-}
+import { IBooking } from "./booking.type";
 
 const bookingSchema = new Schema<IBooking>({
   id: { type: Number, required: true, unique: true },

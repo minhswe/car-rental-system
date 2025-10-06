@@ -7,6 +7,7 @@ import {
 } from "@/modules/vehicle/vehicle.route";
 import { uploadRouter } from "@/modules/upload/upload.route";
 import adminRouter from "@/modules/admin/admin.route";
+import bookingRouter from "@/modules/booking/booking.route";
 
 const router = Router();
 
@@ -21,5 +22,7 @@ router.use("/admin", adminVehicleRouter);
 router.use("/upload", uploadRouter);
 
 router.use("/admin", adminRouter);
+
+router.use("/bookings", bookingRouter);
 
 export default router;

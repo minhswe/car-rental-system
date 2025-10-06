@@ -1,6 +1,9 @@
-import { start } from "repl";
-import { IVehicle, Vehicle, UpdateVehicleRequest } from "./vechicle.model";
-import { startSession } from "mongoose";
+import { Vehicle } from "./vechicle.model";
+import {
+  IVehicle,
+  UpdateVehicleRequest,
+  getAvailableVehicleRequest,
+} from "./vehicle.type";
 import { throwError } from "@/common/configs/error.config";
 import { VehicleStatus } from "@/common/constants/enums";
 import { User } from "@/modules/user/user.model";
@@ -34,6 +37,103 @@ export const createVehicleService = async (
   const createVehicle = vehicle[0];
 
   return createVehicle;
+};
+
+export const updateVehicleService = async (
+  id: string,
+  updateData: UpdateVehicleRequest,
+  files?: Express.Multer.File[]
+): Promise<IVehicle | null> => {
+  const existing = await Vehicle.findById(id);
+  if (!existing) {
+    throw throwError(404, "Vehicle not found");
+  }
+  const existingFilesFromBody = Array.isArray(updateData.existingFiles)
+    ? updateData.existingFiles
+    : updateData.existingFiles
+      ? [updateData.existingFiles]
+      : [];
+
+  const uploadedFiles =
+    files && files.length > 0
+      ? files.map(file => `/uploads/vehicles/${file.filename}`)
+      : [];
+
+  const filePaths = [...existingFilesFromBody, ...uploadedFiles];
+
+  // const filePaths =
+  //   files && files.length > 0
+  //     ? files.map(file => `/uploads/vehicles/${file.filename}`)
+  //     : existing.files; // giữ nguyên ảnh cũ nếu không upload mới
+
+  const updated = await Vehicle.findByIdAndUpdate(
+    id,
+    {
+      ...updateData,
+      files: filePaths,
+    },
+    { new: true }
+  );
+
+  return updated;
+};
+
+// export const deleteVehicleService = async (id: string) => {
+//   const existing = await Vehicle.findById(id);
+//   if (!existing) {
+//     throw throwError(404, "Vehicle not found");
+//   }
+
+//   const deleted = await Vehicle.findByIdAndDelete(id);
+//   return deleted;
+// };
+
+export const getAvailableVehicleService = async (
+  filter: getAvailableVehicleRequest
+) => {
+  const { make, seats, startDate, endDate } = filter;
+
+  const matchConditions: any = {
+    vehicleStatus: VehicleStatus.AVAILABLE,
+  };
+
+  if (make) {
+    matchConditions.make = make;
+  }
+
+  if (seats) {
+    matchConditions.seats = seats;
+  }
+
+  const pipeline: any[] = [
+    { $match: matchConditions },
+    {
+      $lookup: {
+        from: "bookings",
+        localField: "_id",
+        foreignField: "vehicleId",
+        as: "bookings",
+      },
+    },
+  ];
+
+  if (startDate && endDate) {
+    pipeline.push({
+      $match: {
+        bookings: {
+          $not: {
+            $elemMatch: {
+              startDate: { $lt: new Date(endDate) },
+              endDate: { $gt: new Date(startDate) },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  const vehicles = await Vehicle.aggregate(pipeline);
+  return vehicles;
 };
 
 //provider
@@ -75,45 +175,6 @@ export const getVehiclesByProvider = async (providerId: string) => {
   ]);
 
   return vehicles;
-};
-
-export const updateVehicleService = async (
-  id: string,
-  updateData: UpdateVehicleRequest,
-  files?: Express.Multer.File[]
-): Promise<IVehicle | null> => {
-  const existing = await Vehicle.findById(id);
-  if (!existing) {
-    throw throwError(404, "Vehicle not found");
-  }
-  const existingFilesFromBody = Array.isArray(updateData.existingFiles)
-    ? updateData.existingFiles
-    : updateData.existingFiles
-      ? [updateData.existingFiles]
-      : [];
-
-  const uploadedFiles =
-    files && files.length > 0
-      ? files.map(file => `/uploads/vehicles/${file.filename}`)
-      : [];
-
-  const filePaths = [...existingFilesFromBody, ...uploadedFiles];
-
-  // const filePaths =
-  //   files && files.length > 0
-  //     ? files.map(file => `/uploads/vehicles/${file.filename}`)
-  //     : existing.files; // giữ nguyên ảnh cũ nếu không upload mới
-
-  const updated = await Vehicle.findByIdAndUpdate(
-    id,
-    {
-      ...updateData,
-      files: filePaths,
-    },
-    { new: true }
-  );
-
-  return updated;
 };
 
 //admin
