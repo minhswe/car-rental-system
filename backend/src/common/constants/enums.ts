@@ -11,11 +11,9 @@ export enum ReviewAction {
 
 export enum BookingStatus {
   PENDING = "pending",
-  CONFIRMED = "confirmed",
-  REJECTED = "rejected",
-  CANCELLED = "cancelled",
+  CANCELED = "canceled",
   COMPLETED = "completed",
-  INPROCESS = "in-process",
+  BOOKED = "booked",
 }
 
 export enum VehicleStatus {

@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   SettingOutlined,
   TableOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 import { RoleEnum } from "@/common/types";
 
@@ -88,6 +89,12 @@ const Header = () => {
         label: "Provider Dashboard",
         icon: <TableOutlined />,
       });
+    } else if (role === RoleEnum.CUSTOMER) {
+      items.splice(1, 0, {
+        key: "history",
+        label: "History",
+        icon: <HistoryOutlined />,
+      });
     }
 
     return items;
@@ -102,6 +109,10 @@ const Header = () => {
       window.location.href = "/admin";
     } else if (key === "provider") {
       window.location.href = "/provider";
+    }
+
+    if (key === "history") {
+      window.location.href = "/customer/history";
     }
   };
 
@@ -148,7 +159,9 @@ const Header = () => {
 
         {user ? (
           <Space>
-            <span>Welcome, {user.username}</span>
+            <span style={{ fontWeight: "bold", marginRight: 8 }}>
+              {user.username}
+            </span>
             <Dropdown
               menu={{ items: userMenu(user.role), onClick: handleMenuClick }}
               placement="bottomRight"

@@ -7,6 +7,7 @@ import {
 import { throwError } from "@/common/configs/error.config";
 import { VehicleStatus } from "@/common/constants/enums";
 import { User } from "@/modules/user/user.model";
+import { pipeline } from "stream";
 //vehicle
 export const createVehicleService = async (
   vehicleData: Partial<IVehicle>,
@@ -61,11 +62,6 @@ export const updateVehicleService = async (
 
   const filePaths = [...existingFilesFromBody, ...uploadedFiles];
 
-  // const filePaths =
-  //   files && files.length > 0
-  //     ? files.map(file => `/uploads/vehicles/${file.filename}`)
-  //     : existing.files; // giữ nguyên ảnh cũ nếu không upload mới
-
   const updated = await Vehicle.findByIdAndUpdate(
     id,
     {
@@ -115,19 +111,52 @@ export const getAvailableVehicleService = async (
         as: "bookings",
       },
     },
+    {
+      $lookup: {
+        from: "users",
+        localField: "providerId",
+        foreignField: "id",
+        as: "provider",
+        pipeline: [{ $project: { username: 1, email: 1 } }],
+      },
+    },
   ];
 
   if (startDate && endDate) {
+    // pipeline.push({
+    //   $match: {
+    //     bookings: {
+    //       $not: {
+    //         $elemMatch: {
+    //           bookingStartAt: { $lt: new Date(endDate) },
+    //           bookingEndAt: { $gt: new Date(startDate) },
+    //           status: { $in: ["pending", "confirmed"] },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
     pipeline.push({
-      $match: {
-        bookings: {
-          $not: {
-            $elemMatch: {
-              startDate: { $lt: new Date(endDate) },
-              endDate: { $gt: new Date(startDate) },
+      $addFields: {
+        overlappingBookings: {
+          $filter: {
+            input: "$bookings",
+            as: "b",
+            cond: {
+              $and: [
+                { $lt: ["$$b.bookingStartAt", new Date(endDate)] },
+                { $gt: ["$$b.bookingEndAt", new Date(startDate)] },
+                { $in: ["$$b.status", ["pending", "confirmed"]] },
+              ],
             },
           },
         },
+      },
+    });
+
+    pipeline.push({
+      $match: {
+        $expr: { $eq: [{ $size: "$overlappingBookings" }, 0] },
       },
     });
   }
@@ -138,11 +167,6 @@ export const getAvailableVehicleService = async (
 
 //provider
 export const getVehiclesByProvider = async (providerId: string) => {
-  // console.log("Provider ID:", providerId); // Debugging line
-  // const cars = await Vehicle.find({ providerId: providerId });
-  // console.log("Cars by provider:", cars);
-  // return cars;
-
   const vehicles = await Vehicle.aggregate([
     { $match: { providerId: providerId } },
     {

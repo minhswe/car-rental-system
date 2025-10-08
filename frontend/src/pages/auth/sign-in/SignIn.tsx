@@ -17,7 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Notify from "@/components/common/Notification";
 import React, { useState } from "react";
-import { useDispatch, UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signinSuccess } from "@/common/stores/authSlice";
 import { AppDispatch } from "@/common/stores/store";
 

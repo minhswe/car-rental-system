@@ -11,6 +11,10 @@ const providerMenu = [
     key: "/provider/vehicles",
     label: <Link to="/provider/my-vehicles">My vehicles</Link>,
   },
+  {
+    key: "/provider/rental-status",
+    label: <Link to="/provider/rental-status">Rental Status</Link>,
+  },
 ];
 
 const ProviderLayout = () => {

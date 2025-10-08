@@ -24,6 +24,11 @@ export interface Vehicle {
   seats?: number;
   color?: string;
   providerId: string;
+  provider?: Array<{
+    _id: string;
+    username: string;
+    email: string;
+  }>;
 }
 
 interface ReviewHistory {

@@ -146,3 +146,10 @@ export enum ReviewAction {
   APPROVE = "Approve",
   REJECT = "Reject",
 }
+
+export enum BookingStatus {
+  PENDING = "pending",
+  CANCELED = "canceled",
+  COMPLETED = "completed",
+  BOOKED = "booked",
+}
