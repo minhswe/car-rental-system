@@ -9,15 +9,15 @@ interface Rental {
   bookingStartAt: string;
   bookingEndAt: string;
   totalPrice: number;
-  vehicleId: {
-    make: string;
-    model: string;
-    licensePlate: string;
-    fuelType: string;
-    transmission: string;
-    features: string[];
-  };
   status: string;
+  vehicle?: {
+    make?: string;
+    model?: string;
+    licensePlate?: string;
+    fuelType?: string;
+    transmission?: string;
+    features?: string[];
+  };
 }
 
 interface Props {
@@ -32,45 +32,70 @@ const RentalDetailsModal: React.FC<Props> = ({ visible, rental, onClose }) => {
   return (
     <Modal
       title="Booking Details"
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       footer={null}
-      width={screens.xs ? "90%" : 520} // 90% width on mobile
+      width={screens.xs ? "90%" : 520}
     >
-      {rental && (
+      {rental ? (
         <Descriptions
           column={screens.xs ? 1 : 2}
           layout={screens.xs ? "vertical" : "horizontal"}
         >
           <Descriptions.Item label="ID">
-            {rental._id.slice(0, 8) + "..."}
+            {rental._id ? rental._id.slice(0, 8) + "..." : "N/A"}
           </Descriptions.Item>
-          <Descriptions.Item label="Vehicle">{`${rental.vehicleId.make} ${rental.vehicleId.model}`}</Descriptions.Item>
+
+          <Descriptions.Item label="Vehicle">
+            {rental.vehicle
+              ? `${rental.vehicle.make ?? "Unknown"} ${
+                  rental.vehicle.model ?? ""
+                }`
+              : "N/A"}
+          </Descriptions.Item>
+
           <Descriptions.Item label="License Plate">
-            {rental.vehicleId.licensePlate}
+            {rental.vehicle?.licensePlate ?? "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="Start Date">
-            {new Date(rental.bookingStartAt).toLocaleDateString("en-GB")}
+            {rental.bookingStartAt
+              ? new Date(rental.bookingStartAt).toLocaleDateString("en-GB")
+              : "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="End Date">
-            {new Date(rental.bookingEndAt).toLocaleDateString("en-GB")}
+            {rental.bookingEndAt
+              ? new Date(rental.bookingEndAt).toLocaleDateString("en-GB")
+              : "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="Price">
-            {rental.totalPrice.toLocaleString()} VND
+            {rental.totalPrice
+              ? `${rental.totalPrice.toLocaleString()} VND`
+              : "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="Status">
             <RentalStatusTag status={rental.status} />
           </Descriptions.Item>
+
           <Descriptions.Item label="Fuel Type">
-            {rental.vehicleId.fuelType}
+            {rental.vehicle?.fuelType ?? "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="Transmission">
-            {rental.vehicleId.transmission}
+            {rental.vehicle?.transmission ?? "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="Features">
-            {rental.vehicleId.features.join(", ")}
+            {rental.vehicle?.features?.length
+              ? rental.vehicle.features.join(", ")
+              : "N/A"}
           </Descriptions.Item>
         </Descriptions>
+      ) : (
+        <p>No booking selected.</p>
       )}
     </Modal>
   );

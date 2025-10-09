@@ -35,7 +35,7 @@ interface getBookingsByCustomerIdResponse {
   bookingStartAt: Date;
   bookingEndAt: Date;
   totalPrice: number;
-  vehicleId: {
+  vehicle: {
     make: string;
     model: string;
     licensePlate: string;
@@ -44,6 +44,11 @@ interface getBookingsByCustomerIdResponse {
     features: string[];
   };
   status: string;
+  provider?: {
+    username?: string;
+    email?: string;
+    id?: string;
+  };
 }
 
 export const getVehiclesAvailable = async (params?: {

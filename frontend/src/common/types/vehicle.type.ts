@@ -29,6 +29,8 @@ export interface Vehicle {
     username: string;
     email: string;
   }>;
+  province?: string;
+  addressDetail?: string;
 }
 
 interface ReviewHistory {
@@ -49,4 +51,6 @@ export interface UpdateVehicleRequest extends Partial<Vehicle> {
 }
 export interface ApprovalVehicleForm extends Vehicle {
   providerUsername?: string;
+  province?: string;
+  addressDetail?: string;
 }

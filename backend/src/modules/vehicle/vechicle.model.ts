@@ -5,6 +5,7 @@ import {
   VehicleStatus,
   VehicleTransmission,
   VehicleInsurance,
+  Province,
 } from "common/constants/enums";
 import { IVehicle } from "./vehicle.type";
 
@@ -38,6 +39,12 @@ const vehicleSchema = new Schema<IVehicle>({
   },
   seats: { type: Number, required: false },
   color: { type: String, required: false },
+  province: {
+    type: String,
+    enum: Object.values(Province),
+    required: true,
+  },
+  addressDetail: { type: String, required: true },
   bookingCount: { type: Number, required: false, default: 0 },
   providerId: { type: String, required: true },
 });

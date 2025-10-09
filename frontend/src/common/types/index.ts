@@ -152,4 +152,6 @@ export enum BookingStatus {
   CANCELED = "canceled",
   COMPLETED = "completed",
   BOOKED = "booked",
+  CUSTOMER_NOT_RECEIVED = "Customer did not receive the vehicle",
+  VEHICLE_ISSUE = "Vehicle issue, cannot hand over",
 }

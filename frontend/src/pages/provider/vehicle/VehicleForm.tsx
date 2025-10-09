@@ -25,13 +25,13 @@ import {
 import { Vehicle } from "@/common/types/vehicle.type";
 
 interface VehicleFormProps {
-  form: any; // Ant Design Form instance
+  form: any;
   onSubmit: (values: Omit<Vehicle, "id"> & { files: string[] }) => void;
   onCancel: () => void;
   isPending: boolean;
-  isEditable: boolean; // New prop to toggle between view/edit modes
-  mode?: "create" | "edit" | "view"; // Mode of the form
-  initialValues?: Omit<Vehicle, "_id"> & { files: string[] }; // Initial values for edit/view mode
+  isEditable: boolean;
+  mode?: "create" | "edit" | "view";
+  initialValues?: Omit<Vehicle, "_id"> & { files: string[] };
 }
 
 const getBase64 = (file: File): Promise<string> => {
@@ -53,12 +53,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
   initialValues,
 }) => {
   const [fileList, setFileList] = React.useState<UploadFile[]>([]);
-
   const [previewOpen, setPreviewOpen] = React.useState(false);
-
   const [previewImage, setPreviewImage] = React.useState("");
 
-  // Initialize form with initialValues if provided (for edit/view mode)
   useEffect(() => {
     if (!initialValues) {
       setFileList([]);
@@ -67,7 +64,6 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
     }
     if (initialValues) {
       form.setFieldsValue(initialValues);
-
       const initialFiles: UploadFile[] = (initialValues.files || []).map(
         (files: string, index: number) => ({
           uid: `-${index}`,
@@ -79,7 +75,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
       setFileList(initialFiles);
     }
   }, [initialValues, form]);
-  // Convert & preview
+
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview && file.originFileObj) {
       file.preview = await getBase64(file.originFileObj as File);
@@ -93,7 +89,6 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
   }: {
     fileList: UploadFile[];
   }) => {
-    // convert new files to base64
     const updated = await Promise.all(
       newFileList.map(async (file) => {
         if (file.originFileObj && !file.url) {
@@ -101,7 +96,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
             const base64 = await getBase64(file.originFileObj as File);
             return { ...file, url: base64 };
           } catch (err) {
-            message.error("Error converting file to base64");
+            message.error("Lỗi khi chuyển đổi tệp sang base64");
             return file;
           }
         }
@@ -115,46 +110,41 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
     {
       validator: async () => {
         if (fileList.length === 0) {
-          return Promise.reject(new Error("Please upload at least 1 image"));
-        }
-
-        if (fileList.length > 5) {
           return Promise.reject(
-            new Error("You can upload up to 5 images only")
+            new Error("Vui lòng tải lên ít nhất 1 hình ảnh")
           );
         }
-
-        // Check type & size
+        if (fileList.length > 5) {
+          return Promise.reject(
+            new Error("Chỉ được tải lên tối đa 5 hình ảnh")
+          );
+        }
         for (const file of fileList) {
           const isImage =
             file.type?.startsWith("image/") ||
             file.name?.match(/\.(jpg|jpeg|png)$/i);
           if (!isImage) {
-            return Promise.reject(new Error("Only JPG/PNG images are allowed"));
+            return Promise.reject(new Error("Chỉ chấp nhận hình JPG/PNG"));
           }
-
           const sizeOk =
             !file.originFileObj || file.originFileObj.size / 1024 / 1024 < 2;
           if (!sizeOk) {
-            return Promise.reject(new Error("Image must be smaller than 2MB"));
+            return Promise.reject(
+              new Error("Kích thước hình phải nhỏ hơn 2MB")
+            );
           }
         }
-
         return Promise.resolve();
       },
     },
   ];
 
-  const beforeUpload = () => {
-    // Prevent auto upload
-    console.log("Before upload called");
-    return false;
-  };
+  const beforeUpload = () => false;
 
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>Tải lên</div>
     </button>
   );
 
@@ -169,12 +159,12 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="make"
-            label="Make"
-            rules={[{ required: true, message: "Please select the car make" }]}
+            label="Hãng xe"
+            rules={[{ required: true, message: "Vui lòng chọn hãng xe" }]}
           >
             <Select
               showSearch
-              placeholder="Select a make"
+              placeholder="Chọn hãng xe"
               options={Object.values(VehicleMake).map((m) => ({
                 value: m,
                 label: m,
@@ -185,10 +175,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="model"
-            label="Model"
-            rules={[{ required: true, message: "Please enter the car model" }]}
+            label="Mẫu xe"
+            rules={[{ required: true, message: "Vui lòng nhập mẫu xe" }]}
           >
-            <Input />
+            <Input placeholder="Nhập mẫu xe" />
           </Form.Item>
         </Col>
       </Row>
@@ -197,22 +187,22 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="licensePlate"
-            label="License Plate (e.g., 50A12345)"
-            rules={[
-              { required: true, message: "Please enter the license plate" },
-            ]}
+            label="Biển số xe (VD: 50A12345)"
+            rules={[{ required: true, message: "Vui lòng nhập biển số xe" }]}
           >
-            <Input />
+            <Input placeholder="Nhập biển số xe" />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
             name="fuelType"
-            label="Fuel Type"
-            rules={[{ required: true, message: "Please select the fuel type" }]}
+            label="Loại nhiên liệu"
+            rules={[
+              { required: true, message: "Vui lòng chọn loại nhiên liệu" },
+            ]}
           >
             <Select
-              placeholder="Select a fuel type"
+              placeholder="Chọn loại nhiên liệu"
               options={Object.values(VehicleFuelType).map((t) => ({
                 value: t,
                 label: t,
@@ -226,13 +216,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="transmission"
-            label="Transmission"
-            rules={[
-              { required: true, message: "Please select the transmission" },
-            ]}
+            label="Hộp số"
+            rules={[{ required: true, message: "Vui lòng chọn hộp số" }]}
           >
             <Select
-              placeholder="Select a transmission"
+              placeholder="Chọn loại hộp số"
               options={Object.values(VehicleTransmission).map((t) => ({
                 value: t,
                 label: t,
@@ -243,11 +231,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="vehicleStatus"
-            label="Status"
+            label="Trạng thái xe"
             initialValue={VehicleStatus.WAITING_FOR_APPROVAL}
           >
             <Select
-              placeholder="Select a status"
+              placeholder="Chọn trạng thái"
               options={Object.values(VehicleStatus).map((s) => {
                 if (mode === "create") {
                   return {
@@ -265,10 +253,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
                       s === VehicleStatus.BOOKED,
                   };
                 }
-                return {
-                  value: s,
-                  label: s,
-                };
+                return { value: s, label: s };
               })}
             />
           </Form.Item>
@@ -279,15 +264,15 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="pricePerDay"
-            label="Price Per Day (VND)"
+            label="Giá thuê mỗi ngày (VNĐ)"
             rules={[
-              { required: true, message: "Please enter the price per day" },
+              { required: true, message: "Vui lòng nhập giá thuê mỗi ngày" },
             ]}
           >
             <InputNumber
               formatter={formatVND}
               parser={parseVND}
-              placeholder="Enter price per day"
+              placeholder="Nhập giá thuê (VNĐ)"
               min={0}
               step={50000}
               style={{ width: "100%" }}
@@ -297,11 +282,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="compulsoryInsurance"
-            label="Civil Liability Insurance"
-            rules={[{ required: true, message: "Please select insurance" }]}
+            label="Bảo hiểm dân sự bắt buộc"
+            rules={[{ required: true, message: "Vui lòng chọn loại bảo hiểm" }]}
           >
             <Select
-              placeholder="Select insurance"
+              placeholder="Chọn bảo hiểm"
               options={Object.values(CompulsoryInsurance).map((c) => ({
                 value: c,
                 label: c,
@@ -311,17 +296,44 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         </Col>
       </Row>
 
+      {/* Thêm phần địa chỉ */}
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="province"
+            label="Tỉnh / Thành phố"
+            rules={[
+              { required: true, message: "Vui lòng chọn tỉnh/thành phố" },
+            ]}
+          >
+            <Select
+              placeholder="Chọn tỉnh / thành phố"
+              options={[{ value: "Hồ Chí Minh", label: "Hồ Chí Minh" }]}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="addressDetail"
+            label="Địa chỉ cụ thể"
+            rules={[
+              { required: true, message: "Vui lòng nhập địa chỉ cụ thể" },
+            ]}
+          >
+            <Input placeholder="Nhập địa chỉ (VD: 123 Nguyễn Văn Cừ, Quận 5)" />
+          </Form.Item>
+        </Col>
+      </Row>
+
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
             name="seats"
-            label="Number of Seats"
-            rules={[
-              { required: true, message: "Please enter the number of seats" },
-            ]}
+            label="Số ghế ngồi"
+            rules={[{ required: true, message: "Vui lòng nhập số ghế" }]}
           >
             <InputNumber
-              placeholder="Enter number of seats"
+              placeholder="Nhập số ghế"
               min={2}
               style={{ width: "100%" }}
             />
@@ -330,20 +342,20 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
         <Col span={12}>
           <Form.Item
             name="color"
-            label="Color"
-            rules={[{ required: true, message: "Please enter the color" }]}
+            label="Màu xe"
+            rules={[{ required: true, message: "Vui lòng nhập màu xe" }]}
           >
-            <Input placeholder="Enter color" />
+            <Input placeholder="Nhập màu xe" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="features" label="Features">
+          <Form.Item name="features" label="Tính năng">
             <Select
               mode="tags"
-              placeholder="Enter features (e.g., GPS, Bluetooth)"
+              placeholder="Nhập tính năng (VD: GPS, Bluetooth)"
               options={Object.values(VehicleFeature).map((f) => ({
                 value: f,
                 label: f,
@@ -352,17 +364,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item
-            name="files"
-            label="Images"
-            valuePropName="fileList"
-            getValueFromEvent={(e) => {
-              console.log("Upload event:", e);
-              if (Array.isArray(e)) return e;
-              return e?.fileList;
-            }}
-            rules={customRules}
-          >
+          <Form.Item name="files" label="Hình ảnh" rules={customRules}>
             <Upload
               listType="picture-card"
               fileList={fileList}
@@ -388,16 +390,17 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
           </Form.Item>
         </Col>
       </Row>
-      {isEditable ? (
+
+      {isEditable && (
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={isPending}>
-            {initialValues ? "Update" : "Create"}
+            {initialValues ? "Cập nhật" : "Tạo mới"}
           </Button>
           <Button onClick={onCancel} className="ml-2">
-            Cancel
+            Hủy
           </Button>
         </Form.Item>
-      ) : null}
+      )}
     </Form>
   );
 };

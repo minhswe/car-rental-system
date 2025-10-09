@@ -1,6 +1,15 @@
 import React, { use, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Card, Flex, Tag, Image, Carousel, DatePicker, Button } from "antd";
+import {
+  Card,
+  Flex,
+  Tag,
+  Image,
+  Carousel,
+  DatePicker,
+  Button,
+  Divider,
+} from "antd";
 import { formatVND } from "@/common/utils/format";
 import { Vehicle } from "@/common/types/vehicle.type";
 import Title from "antd/es/typography/Title";
@@ -141,7 +150,7 @@ const VehicleDetail: React.FC = () => {
                   </div>
                 ))}
               </Carousel>
-              <Title level={1}>
+              <Title level={3} style={{ margin: 0 }}>
                 {vehicle.make} {vehicle.model}
               </Title>
             </div>
@@ -168,6 +177,9 @@ const VehicleDetail: React.FC = () => {
               </p>
               <p>
                 <b>Giá thuê:</b> {formatVND(vehicle.pricePerDay)} / ngày
+              </p>
+              <p>
+                <b>Địa chỉ:</b> {vehicle.addressDetail}, {vehicle.province}
               </p>
 
               <div>

@@ -73,12 +73,6 @@ const HistoryPage: React.FC = () => {
           queryKey: ["bookings"],
         });
       }
-      // queryClient.setQueryData(["bookings", user?.id], (oldData: any) => {
-      //   if (!oldData) return [];
-      //   return oldData.map((item: BookingHistory) =>
-      //     item._id === bookingId ? { ...item, status: newStatus } : item
-      //   );
-      // });
       setNotify({
         open: true,
         type: "success",

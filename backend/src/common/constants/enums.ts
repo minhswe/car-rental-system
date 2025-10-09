@@ -4,6 +4,10 @@ export enum UserRole {
   CUSTOMER = "Customer",
 }
 
+export enum Province {
+  HCM = "Hồ Chí Minh",
+}
+
 export enum ReviewAction {
   APPROVE = "Approve",
   REJECT = "Reject",

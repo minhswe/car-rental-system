@@ -5,6 +5,7 @@ import ContentWrapper from "../common/ContentWrapper";
 import { Link } from "react-router-dom";
 import SiderMenu from "@/components/common/SideBarMenu";
 import HeaderBar from "@/components/common/HeaderBar";
+import ChatBox from "@/components/chatbox/ChatBox";
 
 const providerMenu = [
   {
@@ -14,6 +15,10 @@ const providerMenu = [
   {
     key: "/provider/rental-status",
     label: <Link to="/provider/rental-status">Rental Status</Link>,
+  },
+  {
+    key: "/provider/my-revenue",
+    label: <Link to="/provider/my-revenue">My Revenue</Link>,
   },
 ];
 
@@ -36,6 +41,7 @@ const ProviderLayout = () => {
         <HeaderBar />
         <ContentWrapper />
       </Layout>
+      <ChatBox />
     </Layout>
   );
 };

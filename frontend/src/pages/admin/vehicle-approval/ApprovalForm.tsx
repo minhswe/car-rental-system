@@ -73,6 +73,15 @@ const ApprovalForm: React.FC<ApprovalFormProps> = ({
           <Descriptions.Item label="Provider Username">
             {vehicle.providerUsername ? vehicle.providerUsername : "N/A"}
           </Descriptions.Item>
+
+          {/* ✅ Thêm hai dòng này */}
+          <Descriptions.Item label="Province">
+            {vehicle.province || "N/A"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Address Detail">
+            {vehicle.addressDetail || "N/A"}
+          </Descriptions.Item>
+
           <Descriptions.Item label="Status">
             {vehicle.vehicleStatus}
           </Descriptions.Item>

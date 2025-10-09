@@ -5,7 +5,7 @@ export interface BookingHistory {
   bookingStartAt: Date | string;
   bookingEndAt: Date | string;
   totalPrice: number;
-  vehicleId: {
+  vehicle: {
     make: string;
     model: string;
     licensePlate: string;
@@ -14,4 +14,9 @@ export interface BookingHistory {
     features: string[];
   };
   status: string;
+  provider?: {
+    username?: string;
+    email?: string;
+    id?: string;
+  };
 }

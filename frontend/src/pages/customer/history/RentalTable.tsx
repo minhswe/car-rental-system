@@ -8,7 +8,6 @@ import {
   Space,
   Tooltip,
   Dropdown,
-  Menu,
   MenuProps,
 } from "antd";
 import dayjs from "dayjs";
@@ -21,15 +20,16 @@ import {
 import RentalStatusTag from "./RentalStatusTag";
 import { BookingHistory } from "@/common/types/booking.type";
 import { BookingStatus } from "@/common/types/index";
+
 const { useBreakpoint } = Grid;
 
 interface Props {
   data: BookingHistory[];
   onViewDetails: (rental: BookingHistory) => void;
   onViewInvoice: (rental: BookingHistory) => void;
-  onMarkReceived: (rental: BookingHistory) => void; // Thêm callback cho Mark as Received
-  onCompleteTrip: (rental: BookingHistory) => void; // Thêm callback cho Complete Trip
-  onCancel: (rental: BookingHistory) => void; // Thêm callback cho Cancel
+  onMarkReceived: (rental: BookingHistory) => void;
+  onCompleteTrip: (rental: BookingHistory) => void;
+  onCancel: (rental: BookingHistory) => void;
 }
 
 const RentalTable: React.FC<Props> = ({
@@ -42,149 +42,103 @@ const RentalTable: React.FC<Props> = ({
 }) => {
   const screens = useBreakpoint();
 
-  // Chuẩn hóa dữ liệu
   const normalizedData = data.map((item) => {
-    const startAt = item.bookingStartAt
-      ? dayjs(item.bookingStartAt).format("DD/MM/YYYY HH:mm")
-      : "N/A";
-    const endAt = item.bookingEndAt
-      ? dayjs(item.bookingEndAt).format("DD/MM/YYYY HH:mm")
-      : "N/A";
-
-    const vehicle = item.vehicleId || {
-      make: "",
-      model: "",
-      licensePlate: "",
-      fuelType: "",
-      transmission: "",
-      features: [],
-    };
+    const vehicle = item.vehicle || item.vehicleId || {};
 
     return {
-      _id: item._id || "",
-      bookingStartAt: startAt, // <-- string
-      bookingEndAt: endAt, // <-- string
+      ...item,
+      bookingStartAt: item.bookingStartAt
+        ? dayjs(item.bookingStartAt).format("DD/MM/YYYY HH:mm")
+        : "N/A",
+      bookingEndAt: item.bookingEndAt
+        ? dayjs(item.bookingEndAt).format("DD/MM/YYYY HH:mm")
+        : "N/A",
       totalPrice: Number(item.totalPrice) || 0,
-      vehicleId: vehicle,
-      status: Object.values(BookingStatus).includes(
-        item.status as BookingStatus
-      )
-        ? (item.status as BookingStatus)
-        : BookingStatus.PENDING,
-      carName: `${vehicle.make} ${vehicle.model}`.trim() || "Unnamed Vehicle",
+      vehicle: {
+        make: vehicle.make || "Unknown",
+        model: vehicle.model || "",
+        licensePlate: vehicle.licensePlate || "N/A",
+        fuelType: vehicle.fuelType || "",
+        transmission: vehicle.transmission || "",
+        features: vehicle.features || [],
+      },
+      provider: {
+        username: item.provider?.username || "Unknown",
+        email: item.provider?.email || "",
+      },
+      carName:
+        `${vehicle.make || ""} ${vehicle.model || ""}`.trim() ||
+        "Unnamed Vehicle",
     };
   });
 
-  // Dropdown menu cho mobile
-  // const getMenuItems = (item: BookingHistory): MenuProps["items"] => (
-  //   <Menu>
-  //     <Menu.Item key="detail" onClick={() => onViewDetails(item)}>
-  //       <EyeOutlined /> Chi tiết
-  //     </Menu.Item>
-  //     <Menu.Item key="invoice" onClick={() => onViewInvoice(record)} disabled>
-  //       <EyeOutlined /> Hóa đơn
-  //     </Menu.Item>
-  //     {record.status === "pending" && (
-  //       <Menu.Item key="received" onClick={() => onMarkReceived(record)}>
-  //         <CheckOutlined /> Đã nhận xe
-  //       </Menu.Item>
-  //     )}
-  //     {record.status === "confirmed" && (
-  //       <Menu.Item key="complete" onClick={() => onCompleteTrip(record)}>
-  //         <CheckOutlined /> Hoàn thành chuyến
-  //       </Menu.Item>
-  //     )}
-  //     {["pending", "confirmed"].includes(record.status) && (
-  //       <Menu.Item key="cancel" onClick={() => onCancel(record)}>
-  //         <CloseOutlined /> Hủy
-  //       </Menu.Item>
-  //     )}
-  //   </Menu>
-  // );
-
+  // ✅ Dropdown menu cho mobile
   const getMenuItems = (item: BookingHistory): MenuProps["items"] => {
     const items: MenuProps["items"] = [
       {
         key: "details",
         label: "Xem chi tiết",
-        onClick: () => onViewDetails?.(item),
+        onClick: () => onViewDetails(item),
       },
       {
         key: "invoice",
         label: "Hóa đơn",
-        onClick: () => onViewInvoice?.(item),
+        onClick: () => onViewInvoice(item),
       },
     ];
 
-    // Conditionally add items based on status
-    if (item.status === "CONFIRMED") {
+    if (item.status === BookingStatus.BOOKED) {
       items.push({
         key: "received",
         label: "Đã nhận xe",
-        onClick: () => onMarkReceived?.(item),
+        onClick: () => onMarkReceived(item),
       });
     }
 
-    if (item.status === "DELIVERED") {
+    if (item.status === BookingStatus.COMPLETED) {
       items.push({
         key: "complete",
         label: "Hoàn tất chuyến",
-        onClick: () => onCompleteTrip?.(item),
+        onClick: () => onCompleteTrip(item),
       });
     }
 
-    if (item.status === "PENDING") {
+    if (item.status === BookingStatus.PENDING) {
       items.push({
         key: "cancel",
         label: "Hủy đặt xe",
         danger: true,
-        onClick: () => onCancel?.(item),
+        onClick: () => onCancel(item),
       });
     }
 
     return items;
   };
 
-  // Cột cho Table (Desktop)
+  // ✅ Cột cho desktop
   const columns = [
-    // {
-    //   title: "Action",
-    //   dataIndex: "action",
-    //   key: "action",
-    //   render: (_: any, record: BookingHistory) => (
-    //     <Tooltip title="Xem chi tiết">
-    //       <Button
-    //         type="primary"
-    //         icon={<EyeOutlined />}
-    //         size="small"
-    //         onClick={() => onViewDetails(record)}
-    //       >
-    //         Details
-    //       </Button>
-    //     </Tooltip>
-    //   ),
-    // },
-    { title: "Vehicle Name", dataIndex: "carName", key: "carName" },
-    { title: "Start at", dataIndex: "bookingStartAt", key: "bookingStartAt" },
-    { title: "End at", dataIndex: "bookingEndAt", key: "bookingEndAt" },
+    { title: "Tên xe", dataIndex: "carName", key: "carName" },
+    { title: "Bắt đầu", dataIndex: "bookingStartAt", key: "bookingStartAt" },
+    { title: "Kết thúc", dataIndex: "bookingEndAt", key: "bookingEndAt" },
     {
-      title: "Total price",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      render: (totalPrice: number) => `${totalPrice.toLocaleString()} VND`,
+      title: "Chủ xe",
+      dataIndex: "provider",
+      key: "provider",
+      render: (_: any, record: BookingHistory) =>
+        record.provider?.username || "Unknown",
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       render: (status: string) => <RentalStatusTag status={status} />,
     },
     {
-      title: "Action",
+      title: "Thao tác",
       key: "action",
       render: (_: any, record: BookingHistory) => (
         <Space size="small">
-          <Tooltip title="Xem chi tiết">
+          <Tooltip title="Chi tiết">
             <Button
               type="primary"
               icon={<EyeOutlined />}
@@ -194,10 +148,10 @@ const RentalTable: React.FC<Props> = ({
               Details
             </Button>
           </Tooltip>
+
           {record.status === BookingStatus.PENDING && (
-            <Tooltip title="Mark as received vehicle">
+            <Tooltip title="Đã nhận xe">
               <Button
-                type="default"
                 icon={<CheckOutlined />}
                 size="small"
                 onClick={() => onMarkReceived(record)}
@@ -206,10 +160,10 @@ const RentalTable: React.FC<Props> = ({
               </Button>
             </Tooltip>
           )}
+
           {record.status === BookingStatus.BOOKED && (
-            <Tooltip title="Complete your drive">
+            <Tooltip title="Hoàn tất chuyến đi">
               <Button
-                type="default"
                 icon={<CheckOutlined />}
                 size="small"
                 onClick={() => onCompleteTrip(record)}
@@ -218,16 +172,16 @@ const RentalTable: React.FC<Props> = ({
               </Button>
             </Tooltip>
           )}
-          {["pending", "booked"].includes(record.status) && (
-            <Tooltip title="Cancel booking">
+
+          {BookingStatus.PENDING.includes(record.status) && (
+            <Tooltip title="Hủy đặt xe">
               <Button
-                type="primary"
                 danger
                 icon={<CloseOutlined />}
                 size="small"
                 onClick={() => onCancel(record)}
               >
-                Cancel
+                Hủy đặt xe
               </Button>
             </Tooltip>
           )}
@@ -236,9 +190,9 @@ const RentalTable: React.FC<Props> = ({
     },
   ];
 
-  // Cột cho Tablet (giảm bớt cột)
+  // ✅ Cột cho tablet
   const tabletColumns = [
-    { title: "Tên xe", dataIndex: "carName", key: "carName" },
+    { title: "Xe", dataIndex: "carName", key: "carName" },
     {
       title: "Trạng thái",
       dataIndex: "status",
@@ -249,53 +203,16 @@ const RentalTable: React.FC<Props> = ({
       title: "Hành động",
       key: "action",
       render: (_: any, record: BookingHistory) => (
-        <Space size="small">
-          <Tooltip title="Xem chi tiết">
-            <Button
-              type="primary"
-              icon={<EyeOutlined />}
-              size="small"
-              onClick={() => onViewDetails(record)}
-            />
-          </Tooltip>
-          {record.status === BookingStatus.PENDING && (
-            <Tooltip title="Xác nhận đã nhận xe">
-              <Button
-                type="default"
-                icon={<CheckOutlined />}
-                size="small"
-                onClick={() => onMarkReceived(record)}
-              />
-            </Tooltip>
-          )}
-          {record.status === BookingStatus.BOOKED && (
-            <Tooltip title="Complete your drive">
-              <Button
-                type="default"
-                icon={<CheckOutlined />}
-                size="small"
-                onClick={() => onCompleteTrip(record)}
-              />
-            </Tooltip>
-          )}
-          {["pending", "booked"].includes(record.status) && (
-            <Tooltip title="Hủy booking">
-              <Button
-                type="primary"
-                danger
-                icon={<CloseOutlined />}
-                size="small"
-                onClick={() => onCancel(record)}
-              />
-            </Tooltip>
-          )}
-        </Space>
+        <Dropdown menu={{ items: getMenuItems(record) }} trigger={["click"]}>
+          <Button icon={<MoreOutlined />} />
+        </Dropdown>
       ),
     },
   ];
 
-  // Render Table cho Desktop/Tablet, List cho Mobile
-  return screens.xs && !screens.sm ? ( // Mobile (<576px)
+  // ✅ Responsive render
+  return screens.xs && !screens.sm ? (
+    // 📱 Mobile
     <List
       grid={{ gutter: 16, column: 1 }}
       dataSource={normalizedData}
@@ -314,35 +231,36 @@ const RentalTable: React.FC<Props> = ({
             ]}
           >
             <p>
-              <strong>Từ ngày:</strong> {item.bookingStartAt}
+              <strong>Từ:</strong> {item.bookingStartAt}
             </p>
             <p>
-              <strong>Đến ngày:</strong> {item.bookingEndAt}
+              <strong>Đến:</strong> {item.bookingEndAt}
             </p>
             <p>
               <strong>Giá:</strong> {item.totalPrice.toLocaleString()} VND
             </p>
             <p>
-              <strong>Biển số:</strong> {item.vehicleId.licensePlate}
+              <strong>Biển số:</strong> {item.vehicle.licensePlate}
             </p>
           </Card>
         </List.Item>
       )}
     />
-  ) : screens.sm && !screens.lg ? ( // Tablet (576px - 992px)
+  ) : screens.sm && !screens.lg ? (
+    // 💻 Tablet
     <Table
       columns={tabletColumns}
       dataSource={normalizedData}
-      rowKey="id"
+      rowKey={(r) => r._id}
       pagination={{ pageSize: 10 }}
       scroll={{ x: 600 }}
     />
   ) : (
-    // Desktop (>=992px)
+    // 🖥️ Desktop
     <Table
       columns={columns}
       dataSource={normalizedData}
-      rowKey="id"
+      rowKey={(r) => r._id}
       pagination={{ pageSize: 10 }}
       scroll={{ x: 800 }}
     />

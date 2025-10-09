@@ -1,5 +1,5 @@
 import apiClient from "./apiClient";
-
+import { ProviderRenterResponse } from "@/common/types/provider.type";
 import {
   Vehicle,
   ProviderVehicle,
@@ -46,5 +46,25 @@ export const updateVehicle = async (
     },
   });
 
+  return response.data;
+};
+
+export const getCurrentRentersByProvider = async (
+  providerId: string
+): Promise<ProviderRenterResponse> => {
+  const response = await apiClient.get<ProviderRenterResponse>(
+    `/bookings/${providerId}/renters`
+  );
+  console.log("Fetched renters:", response.data);
+
+  return {
+    message: response.data.message || "No message provided",
+    data: Array.isArray(response.data.data) ? response.data.data : [],
+  };
+};
+
+export const getRevenueForProvider = async (providerId: string) => {
+  const response = await apiClient.get(`bookings/${providerId}/revenue`);
+  console.log("Fetched revenue:", response.data);
   return response.data;
 };

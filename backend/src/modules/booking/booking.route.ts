@@ -12,5 +12,14 @@ bookingRouter.patch(
   "/:bookingId/status",
   bookingController.changeStatusByCustomerController
 );
+bookingRouter.get(
+  "/:providerId/renters",
+  bookingController.getCurrentRentersByProviderController
+);
+
+bookingRouter.get(
+  "/:providerId/revenue",
+  bookingController.getRevenueForProviderController
+);
 
 export default bookingRouter;

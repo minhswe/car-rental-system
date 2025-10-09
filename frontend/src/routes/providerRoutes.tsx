@@ -3,6 +3,9 @@ import { RoleEnum } from "@/common/types";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProviderLayout from "@/components/layouts/ProviderLayout";
 import VehicleManagment from "@/pages/provider/vehicle/VehicleManagment";
+import RentalStatus from "@/pages/provider/rental-status/RentalStatus";
+import Revenue from "@/pages/provider/revenue/Revenue";
+
 const providerRoutes: RouteObject[] = [
   {
     path: "/provider",
@@ -15,6 +18,14 @@ const providerRoutes: RouteObject[] = [
       {
         path: "my-vehicles",
         element: <VehicleManagment />,
+      },
+      {
+        path: "rental-status",
+        element: <RentalStatus />,
+      },
+      {
+        path: "my-revenue",
+        element: <Revenue />,
       },
     ],
   },

@@ -12,8 +12,20 @@ import { ApprovalVehicleForm } from "@/common/types/vehicle.type";
 import { RootState } from "@/common/stores/store";
 import { useSelector } from "react-redux";
 import { ReviewAction } from "@/common/types/index";
+import Notify from "@/components/common/Notification";
 
 const VehicleApproval: React.FC = () => {
+  const [notify, setNotify] = useState<{
+    open: boolean;
+    type: "success" | "error";
+    message: string;
+    description?: string;
+  }>({
+    open: false,
+    type: "success",
+    message: "",
+    description: "",
+  });
   const { user } = useSelector((state: RootState) => state.auth);
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -52,11 +64,23 @@ const VehicleApproval: React.FC = () => {
     },
 
     onSuccess: () => {
+      setNotify({
+        open: true,
+        type: "success",
+        message: "Vehicle reviewed successfully",
+      });
       queryClient.invalidateQueries({ queryKey: ["waitingVehicles"] });
       handleModalClose();
     },
 
-    onError: (error: Error) => {},
+    onError: (error: Error) => {
+      setNotify({
+        open: true,
+        type: "error",
+        message: "Error reviewing vehicle",
+        description: error.message,
+      });
+    },
     onSettled: () => {
       setLoading(false);
     },
@@ -99,6 +123,13 @@ const VehicleApproval: React.FC = () => {
           />
         )}
       </Modal>
+      <Notify
+        open={notify.open}
+        type={notify.type}
+        message={notify.message}
+        description={notify.description}
+        onClose={() => setNotify((prev) => ({ ...prev, open: false }))}
+      />
     </div>
   );
 };

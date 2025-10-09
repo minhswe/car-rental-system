@@ -1,0 +1,302 @@
+[
+  {
+    "id": "efc90be5-66c5-4cb8-94f3-e55cd1181384",
+    "username": "supremeadmin",
+    "password": "$2a$12$F0j.6LG5PuD.cJBOL6ebPur/neXtPmg8tQNBnEJiZsNtbt.90q6JS",
+    "email": "supremeadmin@example.com",
+    "firstName": "Minh",
+    "lastName": "Nguyen",
+    "role": "Admin",
+    "isActive": true
+  },
+  {
+    "id": "4c90e5c2-986f-43bf-ad27-db3f1b641aa8",
+    "username": "provider01",
+    "password": "$2a$12$OyqvGKe.tfJE4frJUpTmP.tAaw4e9ZEY58yy5nFOb1ytgbpkeGW3S",
+    "email": "provider01@example.com",
+    "firstName": "Bao",
+    "lastName": "Tran",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "b7314bdb-bca7-4f82-8f4b-c03a75627656",
+    "username": "provider02",
+    "password": "$2a$12$Xx3nDb.KR6E0u.3xioqIVu7VZgqV0M7yYOenSkmWpprNsUXklHB82",
+    "email": "provider02@example.com",
+    "firstName": "Chi",
+    "lastName": "Pham",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "4295240b-e49d-40ff-8c9e-9bc7916b71da",
+    "username": "provider03",
+    "password": "$2a$12$Y4aaunm1FvWUyx7bqX8eke67/1iMUwCnp763dTA5O3E4jx3alrchO",
+    "email": "provider03@example.com",
+    "firstName": "Dung",
+    "lastName": "Le",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "fe823fc0-1755-4e97-bcfa-bbf40b6c6d57",
+    "username": "provider04",
+    "password": "$2a$12$cbSqCt7xogK7HI5Re9Oe1OSyWoa3NftNn9VXXc9bBFcU.1Gsta412",
+    "email": "provider04@example.com",
+    "firstName": "Hien",
+    "lastName": "Ho",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "fe414aaa-645d-424e-8876-b4bf4fb28785",
+    "username": "provider05",
+    "password": "$2a$12$cbSqCt7xogK7HI5Re9Oe1OSyWoa3NftNn9VXXc9bBFcU.1Gsta412",
+    "email": "provider05@example.com",
+    "firstName": "Khanh",
+    "lastName": "Vo",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "9e587612-615a-47b1-90f4-891b2330dc74",
+    "username": "provider06",
+    "password": "$2a$12$3YMRpWU6RXeJZ4.8L5URk.bnxg6O/NkzntSFUrlGK/7kBvhiO8y7.",
+    "email": "provider06@example.com",
+    "firstName": "Linh",
+    "lastName": "Nguyen",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "9653ad04-712f-4bf9-aefb-9485f7458c40",
+    "username": "provider07",
+    "password": "$2a$12$EyVRD.nTC8HXQct.AS4Etur4K4TckCtEiG2blZsa3sWeYCOA61yua",
+    "email": "provider07@example.com",
+    "firstName": "Minh",
+    "lastName": "Tran",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "d0f2e286-b14a-4bb2-91d8-2042d3a328b2",
+    "username": "provider08",
+    "password": "$2a$12$S2F9bwr8bB6HwCs8tcZuROaBoCHKLKlZL7M6spcIawtV91Od/8tVK",
+    "email": "provider08@example.com",
+    "firstName": "Nga",
+    "lastName": "Pham",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "9c47e6f4-5ca8-4f05-be7a-86369de21246",
+    "username": "provider09",
+    "password": "$2a$12$QRR4w1Us5uHKS827nykBOuIFHQML1X88paHK0k.9Co5TgGgbyqKYC",
+    "email": "provider09@example.com",
+    "firstName": "Phuc",
+    "lastName": "Le",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "27e3cb52-5742-4d9a-b6c7-6fc0425db4e0",
+    "username": "provider10",
+    "password": "$2a$12$QRR4w1Us5uHKS827nykBOuIFHQML1X88paHK0k.9Co5TgGgbyqKYC",
+    "email": "provider10@example.com",
+    "firstName": "Quynh",
+    "lastName": "Hoang",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "85167a1d-39f7-44a2-807a-7d790ac4f871",
+    "username": "provider11",
+    "password": "$2a$12$m97DgiXuO4Fw70fMK0Lo5ekaEq..73G7q4iGP3EUJGo61fGWqDiMm",
+    "email": "provider11@example.com",
+    "firstName": "Son",
+    "lastName": "Pham",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "033aeec9-b8e0-47fc-8de1-1d9b8b95c741",
+    "username": "provider12",
+    "password": "$2a$12$KrwqJqk.9KKeaRMCzlRGvuVE.FBtXJhLQuJ6wRA83iMGjO59sSy9K",
+    "email": "provider12@example.com",
+    "firstName": "Thao",
+    "lastName": "Nguyen",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "a06eb704-69ae-45ed-a149-6f97fb3ece76",
+    "username": "provider13",
+    "password": "$2a$12$MDUX8BfjwWUmqAdIdSVI5O9tkF2SifLYnaxGA5cgEJW6tsGEdax0C",
+    "email": "provider13@example.com",
+    "firstName": "Tuan",
+    "lastName": "Bui",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "d79bb72b-c9b0-4af0-89b5-c95233a4fb05",
+    "username": "provider14",
+    "password": "$2a$12$HSYtPHXrntZhcuSGYO8v.u6.jAirfceBQm.vFBjHwudgr9WlRpvUu",
+    "email": "provider14@example.com",
+    "firstName": "Vy",
+    "lastName": "Dang",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "00c095b8-f8c7-43d1-940e-9d2b0b3d5ead",
+    "username": "provider15",
+    "password": "$2a$12$Me4ZLCDLB5UiyO0IZ5UqUukX21GrFWDs5Kz.jpwhHxeqyZ5F5EdrS",
+    "email": "provider15@example.com",
+    "firstName": "Xuan",
+    "lastName": "Le",
+    "role": "Provider",
+    "isActive": true
+  },
+  {
+    "id": "fdeac3dc-28dc-4545-976b-d8a7033af8dc",
+    "username": "user01",
+    "password": "$2a$12$mwwMPgCoy/eOi8V.yed5Fus9D.jWubeO3b5UkJpXZSZDhu4wPKD5S",
+    "email": "user01@example.com",
+    "firstName": "An",
+    "lastName": "Nguyen",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "8b8b98e5-829b-4764-a52c-779c0c342f52",
+    "username": "user02",
+    "password": "$2a$12$NLW6omm26Io960EWTH9AFeHfzCeUfoNpbShbmF6UTqjH7A6IEIKRW",
+    "email": "user02@example.com",
+    "firstName": "Binh",
+    "lastName": "Tran",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "5d612e01-2347-4ba9-827a-6388cc5aa7b6",
+    "username": "user03",
+    "password": "$2a$12$e5hiic2nafqIl2EnpVskg.yrufaKaSpDSMXoIguuNQmg2xbt5ck4m",
+    "email": "user03@example.com",
+    "firstName": "Cuong",
+    "lastName": "Pham",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "07e5cdc9-19c0-497e-bdd7-1a4d3419dd82",
+    "username": "user04",
+    "password": "$2a$12$YyLDseG0bXXMym7GdAfGten04XagX3x9qjmEyV9EXWnjm37bgqrD.",
+    "email": "user04@example.com",
+    "firstName": "Duyen",
+    "lastName": "Le",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "bab72244-67e1-438b-a441-c4e5925e247c",
+    "username": "user05",
+    "password": "$2a$12$UvoDsEXtIveh7Cs2IleG/.pbSQc8h00D9RGTXVdMwHdeUTG2Y3Fmi",
+    "email": "user05@example.com",
+    "firstName": "Giang",
+    "lastName": "Ho",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "f08760d4-4c79-4e3b-acf3-884d8fcb099f",
+    "username": "user06",
+    "password": "$2a$12$KTpsYQGVKiI1ZQGAfPfQCure073nzcfWR5E4rrIcryJR44NpXNaZi",
+    "email": "user06@example.com",
+    "firstName": "Hoa",
+    "lastName": "Tran",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "c289e58f-e836-4d17-b67c-11bb9b836c53",
+    "username": "user07",
+    "password": "$2a$12$Ixztj9CgCssiThVTu2sd8.VW1TbqzookoavHep9f9wUK1h2igazdi",
+    "email": "user07@example.com",
+    "firstName": "Hung",
+    "lastName": "Nguyen",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "630b268e-681a-4093-9ae7-5eab35374fd0",
+    "username": "user08",
+    "password": "$2a$12$OU1GKGuG.3zqz3/c9qpLM.anzJBvMl39T5888HOQUfFFDCEkcjP1y",
+    "email": "user08@example.com",
+    "firstName": "Kieu",
+    "lastName": "Pham",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "7c9fe41a-6f12-47c9-b7c0-56de7ed8acb9",
+    "username": "user09",
+    "password": "$2a$12$N5V4Y1CxFn5/9QzZC6Fxe.vxfWdj4QgJg3syRAR4vVvLy1GICdeDm",
+    "email": "user09@example.com",
+    "firstName": "Lam",
+    "lastName": "Vo",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "b4290b16-0581-40a3-8c9f-e1b96b51814c",
+    "username": "user10",
+    "password": "$2a$12$OGfL.UoQyUvT.6Kfx1JwB.I2OIo2ELl2lL/ayRI4TAPdll7L2.Vlu",
+    "email": "user10@example.com",
+    "firstName": "My",
+    "lastName": "Bui",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "7ec6c0d1-1dcc-4f68-9a72-1c0fa5272cb2",
+    "username": "user11",
+    "password": "$2a$12$JckvJNKacDD3V6s3QwLB5uFcZMwoOecNUf70DOFI7oZI2nQnDFDgG",
+    "email": "user11@example.com",
+    "firstName": "Nam",
+    "lastName": "Dang",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "2a5600f9-6529-431e-b353-31e6d3639a0d",
+    "username": "user12",
+    "password": "$2a$12$CtHqaNFABH3vAt1dTWcaLO1PL857Jf6MSz3qFCoD1uyqC/uIMuKb2",
+    "email": "user12@example.com",
+    "firstName": "Oanh",
+    "lastName": "Hoang",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "9e00b64b-0389-4848-8761-b060eefb6826",
+    "username": "user13",
+    "password": "$2a$12$JHZyLUl4OclcFKY2D.Xua.HxtMKz/x1GMo2.ib2MfCldAQioHPjC6",
+    "email": "user13@example.com",
+    "firstName": "Phuoc",
+    "lastName": "Tran",
+    "role": "Customer",
+    "isActive": true
+  },
+  {
+    "id": "d9b7b524-341b-4acf-9304-8d0f96081855",
+    "username": "user14",
+    "password": "$2a$12$RgL22r8k0nsyRu5F1KEORO.1Xiru/8nCxXo/qXiVMEs.fd6RQJniq",
+    "email": "user14@example.com",
+    "firstName": "Quyen",
+    "lastName": "Le",
+    "role": "Customer",
+    "isActive": true
+  }
+]

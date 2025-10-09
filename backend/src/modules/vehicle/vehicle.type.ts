@@ -4,6 +4,7 @@ import {
   VehicleStatus,
   VehicleTransmission,
   VehicleInsurance,
+  Province,
 } from "common/constants/enums";
 
 export interface IVehicle {
@@ -21,6 +22,8 @@ export interface IVehicle {
   color?: string;
   bookingCount?: number;
   providerId: string;
+  province: Province;
+  addressDetail: string;
 }
 
 export interface UpdateVehicleRequest extends Partial<IVehicle> {
