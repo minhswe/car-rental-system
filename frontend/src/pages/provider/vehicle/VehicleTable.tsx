@@ -42,27 +42,8 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
 }) => {
   const [isOpenReview, setIsOpenReview] = useState(false);
 
-  // const [isOpenView, setIsOpenView] = useState(false);
-
-  // const [isOpenEdit, setIsOpenEdit] = useState(false);
-
-  // const [isOpenDelete, setIsOpenDelete] = useState(false);
-
   const [selectedVehicle, setSelectedVehicle] =
     useState<ProviderVehicle | null>(null);
-
-  // const [form] = Form.useForm();
-
-  // const handleView = (vehicle: Vehicle) => {
-  //   setSelectedVehicle(vehicle as ProviderVehicle);
-  //   setIsOpenView(true);
-  // };
-
-  // const handleEdit = (vehicle: Vehicle) => {
-  //   setSelectedVehicle(vehicle as ProviderVehicle);
-  //   form.setFieldsValue(vehicle);
-  //   setIsOpenEdit(true);
-  // };
 
   const columns = [
     { title: "Make", dataIndex: "make", key: "make" },
@@ -214,84 +195,6 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
           )}
         </Typography.Paragraph>
       </Modal>
-
-      {/* <Modal
-        title="View Vehicle"
-        open={isOpenView}
-        footer={null}
-        onCancel={() => setIsOpenView(false)}
-      >
-        <VehicleForm
-          form={form}
-          onSubmit={() => {}}
-          onCancel={() => setIsOpenView(false)}
-          isPending={false}
-          isEditable={false}
-          initialValues={
-            selectedVehicle
-              ? {
-                  ...selectedVehicle,
-                  files: selectedVehicle.files
-                    ? selectedVehicle.files.map((file: any) =>
-                        typeof file === "string"
-                          ? file
-                          : file.url || file.name || ""
-                      )
-                    : [],
-                }
-              : undefined
-          }
-        />
-      </Modal> */}
-      {/* <Modal
-        title="Edit Vehicle"
-        open={isOpenEdit}
-        footer={null}
-        onCancel={() => {
-          setIsOpenEdit(false);
-          form.resetFields();
-          setSelectedVehicle(null);
-        }}
-      >
-        <VehicleForm
-          form={form}
-          onSubmit={(values) => {
-            if (selectedVehicle) {
-              onEdit?.({ ...selectedVehicle, ...values });
-            }
-          }}
-          onCancel={() => {
-            setIsOpenEdit(false);
-            form.resetFields();
-            setSelectedVehicle(null);
-          }}
-          isPending={isLoading}
-          isEditable={true}
-          initialValues={
-            selectedVehicle
-              ? {
-                  make: selectedVehicle.make,
-                  model: selectedVehicle.model,
-                  licensePlate: selectedVehicle.licensePlate,
-                  files: selectedVehicle.files.map((file: any) =>
-                    typeof file === "string"
-                      ? file
-                      : file.url || file.name || ""
-                  ),
-                  fuelType: selectedVehicle.fuelType,
-                  transmission: selectedVehicle.transmission,
-                  features: selectedVehicle.features || [],
-                  pricePerDay: selectedVehicle.pricePerDay,
-                  compulsoryInsurance: selectedVehicle.compulsoryInsurance,
-                  vehicleStatus: selectedVehicle.vehicleStatus,
-                  seats: selectedVehicle.seats,
-                  color: selectedVehicle.color,
-                  providerId: selectedVehicle.providerId,
-                }
-              : undefined
-          }
-        />
-      </Modal> */}
     </>
   );
 };

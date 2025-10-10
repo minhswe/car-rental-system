@@ -27,17 +27,11 @@ vehicleRouter.put(
   vehicleController.updateVehicle
 );
 
+//for customer
 vehicleRouter.get(
   "/available",
   vehicleController.getAvailableVehicleController
 );
-
-// vehicleRouter.post(
-//   "/vehicle/upload",
-//   uploadVehicleImages,
-//   authMiddleware,
-//   roleRequireMiddleware(UserRole.PROVIDER)
-// );
 
 export const providerVehicleRouter = Router({ mergeParams: true });
 

@@ -10,9 +10,6 @@ import { VehicleMake } from "@/common/constants/enums";
 //vehicle
 export const createVehicle = asyncHandler(
   async (req: Request, res: Response) => {
-    console.log("Request Body:", req.body); // Debugging line
-    console.log("Request Files:", req.files); // Debugging line
-
     const vehicleData = req.body;
     const files = req.files as Express.Multer.File[]; // multer.array("files")
 

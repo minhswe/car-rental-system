@@ -67,6 +67,7 @@ export const updateVehicleService = async (
     {
       ...updateData,
       files: filePaths,
+      vehicleStatus: VehicleStatus.WAITING_FOR_APPROVAL,
     },
     { new: true }
   );
@@ -192,7 +193,7 @@ export const getVehiclesByProvider = async (providerId: string) => {
             },
           },
           { $project: { admin: 0 } }, // loại bỏ thông tin admin thừa
-          { $sort: { reviewedAt: -1 } }, // sort từng lịch sử review
+          { $sort: { reviewedAt: 1 } }, // sort từng lịch sử review
         ],
       },
     },
