@@ -15,6 +15,30 @@ export interface UpdateApprovalPayload {
   reason?: string;
 }
 
+interface User {
+  _id: string;
+  id: string;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: "Admin" | "Provider" | "Customer";
+  isActive: boolean;
+}
+
+interface userResponse {
+  message: string;
+  data: User[];
+}
+
+export interface PaginatedUserResponse {
+  message: string;
+  data: User[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export const getWaitingVehiclesApproval = async (): Promise<ApiResponse> => {
   const response = await apiClient.get<ApiResponse>(
     `/admin/vehicles/waiting-for-approval`
@@ -35,4 +59,21 @@ export const updateVehicleApproval = async (
     payload
   );
   return responses.data;
+};
+
+export const getAllUser = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedUserResponse> => {
+  const token = localStorage.getItem("token");
+  const response = await apiClient.get<PaginatedUserResponse>(
+    `/admin/users?page=${page}&limit=${limit}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log("Fetched users:", response.data.data);
+  return response.data;
 };

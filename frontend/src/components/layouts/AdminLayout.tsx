@@ -11,6 +11,10 @@ const adminMenu = [
     key: "/admin/vehicle-approvals",
     label: <Link to="/admin/vehicle-approvals">Vehicle Approvals</Link>,
   },
+  {
+    key: "/admin/users",
+    label: <Link to="/admin/users">User Management</Link>,
+  },
 ];
 
 const AdminLayout = () => {

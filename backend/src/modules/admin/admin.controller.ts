@@ -21,3 +21,16 @@ export const reviewVehicleController = asyncHandler(
     );
   }
 );
+
+export const getAllUsersController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const result = await adminService.getAllUserService(page, limit);
+    if (!result) {
+      createResponse(res, 404, MESSAGE.GET_ALL_USER_FAIL);
+    }
+    createResponse(res, 200, MESSAGE.GET_ALL_USER_SUCCESS, result);
+  }
+);

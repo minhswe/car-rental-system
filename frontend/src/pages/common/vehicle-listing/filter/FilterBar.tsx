@@ -1,6 +1,6 @@
 import React from "react";
 import { DatePicker, Checkbox, Select, Space } from "antd";
-
+import { VehicleMake } from "@/common/types/index";
 const { RangePicker } = DatePicker;
 
 interface FilterBarProps {
@@ -14,6 +14,9 @@ interface FilterBarProps {
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
+  const makeOptions = Array.isArray(VehicleMake)
+    ? VehicleMake.map((make) => ({ label: make, value: make }))
+    : Object.values(VehicleMake).map((make) => ({ label: make, value: make }));
   return (
     <Space direction="vertical" size="middle" style={{ width: "!00%" }}>
       <RangePicker
@@ -43,10 +46,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
           onChange({ make: value || null });
         }}
         allowClear
-        options={[
-          { label: "Toyota", value: "Toyota" },
-          { label: "Honda", value: "Honda" },
-        ]}
+        options={makeOptions}
       />
     </Space>
   );
